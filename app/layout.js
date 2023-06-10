@@ -1,4 +1,6 @@
 import "@styles/globals.css";
+import "./data.js"
+
 function RootLayout({ children }) {
   return (
     <html>

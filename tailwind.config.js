@@ -11,6 +11,9 @@ module.exports = withMT({
       colors: {
         "site-primary": "#6366f1",
       },
+      screens: {
+        "xs": { "max": "330px" },
+      },
     },
   },
   plugins: [],

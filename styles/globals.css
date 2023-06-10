@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.color-switch {
-  @apply w-6 h-6 rounded-sm duration-300 hover:ring-2 border-2 focus:border-black focus:scale-105;
-}
-
-.size-btn {
-  @apply py-0 px-3 bg-indigo-600 focus:transition-all duration-500 rounded-md
-    text-white font-bold focus:font-bold border-2 focus:border-black focus:scale-105;
-}
 numbtninput::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -19,9 +11,58 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-.product-input {
-  @apply border-b-2 border-site-primary focus:outline-none text-site-primary font-medium;
+
+.color-switch {
+  @apply w-6 h-6 rounded-sm duration-300 hover:ring-2 border-2 focus:border-black focus:scale-105;
 }
-.m-btn + .m-btn{
+
+.btn-selected input[type="radio"]:checked {
+  @apply border-black scale-105;
+}
+
+.size-btn {
+  @apply py-0 px-3 focus:transition-all duration-500 rounded-md
+    text-indigo-600 font-bold focus:font-bold border-2 border-indigo-600;
+}
+
+.sizebtn-selected input[type="radio"] {
+  display: none;
+}
+
+.sizebtn-selected input[type="radio"]:checked + span {
+  @apply bg-indigo-600 text-white;
+}
+
+.product-input {
+  @apply border-b-2 border-site-primary focus:outline-none text-indigo-600 font-medium;
+}
+.m-btn + .m-btn {
   margin-left: 10px;
+}
+
+.grid-container {
+  grid-template-columns: 70px 170px;
+}
+
+.file-btn {
+  display: inline-block;
+  background-color: indigo;
+  color: white;
+  padding: 0.5rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.drop-container input[type="file"]::file-selector-button {
+  margin-right: 20px;
+  display: none;
+  border: none;
+  background: #6366f1;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
 }

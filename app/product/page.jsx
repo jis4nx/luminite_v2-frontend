@@ -1,17 +1,19 @@
 import React from "react";
-import ProductItemForm from "../../components/ProductItemForm";
+import ProductForm from "@components/ProductForm";
+import BASE_URL from "@app/data";
 
-
-async function getProductAttributes(){
-  const res = await fetch('http://127.0.0.1:8000/shop/product-attr')
+async function getCategory() {
+  const res = await fetch(BASE_URL+"/shop/category", {cache: "no-store"});
   const data = await res.json()
   return data
 }
 
 async function page() {
-  const attr = await getProductAttributes()
+  const categories = await getCategory()
   return (
-    <ProductItemForm attr={attr}/>
+    <React.Fragment>
+      <ProductForm categories={categories} />
+    </React.Fragment>
   );
 }
 

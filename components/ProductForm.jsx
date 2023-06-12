@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
+  Alert,
   Button,
   Card,
   Input,
@@ -11,38 +12,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
 import { useFormik } from "formik";
-import { getCategories } from "@api/productapi/productapi";
-import { useQuery } from "react-query";
+import { addProduct, getCategories } from "@app/api/productapi/productapi";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 function ProductForm() {
-  const category = useQuery("categories", getCategories, { cacheTime: 5000 });
+  const [open, setOpen] = React.useState(true);
+  const category = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
+  });
 
+  const addProductData = useMutation(addProduct, {});
   const formik = useFormik({
     initialValues: {
-      productName: "",
-      productDesc: "",
+      name: "",
+      desc: "",
     },
     onSubmit: (values) => {
       const formData = new FormData();
-      formData.append("name", values.productName);
-      formData.append("desc", values.productDesc);
-      formData.append("category", values.category.value);
-      formData.append("product_image", values.productImage);
-
-      //     fetch(BASE_URL + "/shop/product/", {
-      //       method: "POST",
-      //       body: formData,
-      //     })
-      //       .then((res) => {
-      //         if (res.ok) {
-      //           console.log("Product Submitted");
-      //         } else {
-      //           console.log("Error submitting");
-      //         }
-      //       }).catch((err) => {
-      //         console.log("error occurred", err);
-      //       });
-      //     console.log(values);
+      const data = { ...values, category: values.category.value };
+      for (let x in data) {
+        formData.append(x, data[x]);
+      }
+      addProductData.mutate(formData);
     },
   });
   //
@@ -57,14 +49,14 @@ function ProductForm() {
             <Input
               label="Product Name"
               color="indigo"
-              name="productName"
+              name="name"
               value={formik.values.productName}
               onChange={formik.handleChange}
             />
             <Textarea
               label="Product description"
               color="indigo"
-              name="productDesc"
+              name="desc"
               value={formik.values.productDesc}
               onChange={formik.handleChange}
             />
@@ -88,7 +80,7 @@ function ProductForm() {
                 accept="images/*"
                 // onChange={(e) => handleFile(e)}
                 onChange={(e) =>
-                  formik.setFieldValue("productImage", e.target.files[0])}
+                  formik.setFieldValue("product_image", e.target.files[0])}
                 required
               />
               <label
@@ -102,8 +94,8 @@ function ProductForm() {
                 />
                 <span className="text-sm font-medium">
                 </span>
-                {formik.values.productImage
-                  ? formik.values.productImage.name
+                {formik.values.product_image
+                  ? formik.values.product_image.name
                   : "Choose File"}
               </label>
             </div>

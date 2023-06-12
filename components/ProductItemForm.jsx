@@ -3,7 +3,8 @@ import { Button } from "@material-tailwind/react";
 import React from "react";
 import Select from "react-select";
 import { useFormik } from "formik";
-import BASE_URL from "@app/data";
+import { useMutation } from "@tanstack/react-query";
+import { addProductItem } from "@app/api/productapi/productapi";
 
 function ProductItemForm({ attr, products }) {
   const selectStyles = {
@@ -24,6 +25,8 @@ function ProductItemForm({ attr, products }) {
     },
   };
 
+  const addProductItemData = useMutation(addProductItem);
+
   const formik = useFormik({
     initialValues: {
       color: "",
@@ -39,23 +42,7 @@ function ProductItemForm({ attr, products }) {
         qty_in_stock: values.qty,
         price: values.price,
       };
-      fetch(BASE_URL + "/shop/products/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((res) => {
-          if (res.ok) {
-            console.log("Product Submitted");
-          } else {
-            console.log("Error submitting");
-          }
-        }).catch((err) => {
-          console.log("error occurred", err);
-        });
-      console.log(data);
+      addProductItemData.mutate(data);
     },
   });
 

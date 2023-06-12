@@ -3,6 +3,7 @@ import { Button } from "@material-tailwind/react";
 import React from "react";
 import Select from "react-select";
 import { useFormik } from "formik";
+import BASE_URL from "@app/data";
 
 function ProductItemForm({ attr, products }) {
   const selectStyles = {
@@ -31,7 +32,29 @@ function ProductItemForm({ attr, products }) {
       qty: "",
     },
     onSubmit: (values) => {
-      const data = { ...values, product: values.product.value };
+      const data = {
+        product: values.product.value,
+        product_size: values.size,
+        product_color: values.color,
+        qty_in_stock: values.qty,
+        price: values.price,
+      };
+      fetch(BASE_URL + "/shop/products/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => {
+          if (res.ok) {
+            console.log("Product Submitted");
+          } else {
+            console.log("Error submitting");
+          }
+        }).catch((err) => {
+          console.log("error occurred", err);
+        });
       console.log(data);
     },
   });

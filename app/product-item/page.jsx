@@ -17,10 +17,16 @@ async function getProducts() {
   const data = await res.json();
   return data;
 }
+
 async function page() {
   const attr = await getProductAttributes();
   const products = await getProducts();
-  return <ProductItemForm attr={attr} products={products} />;
+  return (
+    <ProductItemForm
+      attr={attr}
+      products={products}
+    />
+  );
 }
 
 export default page;

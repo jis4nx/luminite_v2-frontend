@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -11,20 +11,41 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
 import { useFormik } from "formik";
+import { getCategories } from "@api/productapi/productapi";
+import { useQuery } from "react-query";
 
-function ProductForm({ categories }) {
+function ProductForm() {
+  const category = useQuery("categories", getCategories, { cacheTime: 5000 });
+
   const formik = useFormik({
     initialValues: {
       productName: "",
       productDesc: "",
-      productImage: "Choose File",
     },
     onSubmit: (values) => {
-      const data = { ...values, category: values.category.value };
-      console.log(data);
+      const formData = new FormData();
+      formData.append("name", values.productName);
+      formData.append("desc", values.productDesc);
+      formData.append("category", values.category.value);
+      formData.append("product_image", values.productImage);
+
+      //     fetch(BASE_URL + "/shop/product/", {
+      //       method: "POST",
+      //       body: formData,
+      //     })
+      //       .then((res) => {
+      //         if (res.ok) {
+      //           console.log("Product Submitted");
+      //         } else {
+      //           console.log("Error submitting");
+      //         }
+      //       }).catch((err) => {
+      //         console.log("error occurred", err);
+      //       });
+      //     console.log(values);
     },
   });
-
+  //
   return (
     <>
       <Card className="mt-5 max-w-lg p-8 m-auto shadow-xl">
@@ -49,7 +70,7 @@ function ProductForm({ categories }) {
             />
 
             <Select
-              options={categories.map((cat) => ({
+              options={category && category.data?.map((cat) => ({
                 value: cat.id,
                 label: cat.name,
               }))}
@@ -64,10 +85,10 @@ function ProductForm({ categories }) {
                 type="file"
                 id="upload"
                 hidden
-                name="productImage"
-                value={formik.values.productImage}
-                onChange={formik.handleChange}
                 accept="images/*"
+                // onChange={(e) => handleFile(e)}
+                onChange={(e) =>
+                  formik.setFieldValue("productImage", e.target.files[0])}
                 required
               />
               <label
@@ -80,8 +101,10 @@ function ProductForm({ categories }) {
                   className=""
                 />
                 <span className="text-sm font-medium">
-                  {formik.values.productImage.split("\\").pop()}
                 </span>
+                {formik.values.productImage
+                  ? formik.values.productImage.name
+                  : "Choose File"}
               </label>
             </div>
           </div>

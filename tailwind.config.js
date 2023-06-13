@@ -10,6 +10,7 @@ module.exports = withMT({
     extend: {
       colors: {
         "site-primary": "#6366f1",
+        "site-secondary": "#CC0C39",
       },
       screens: {
         "xs": { "max": "330px" },

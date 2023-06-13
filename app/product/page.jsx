@@ -1,7 +1,7 @@
 import React from "react";
 import ProductForm from "@components/ProductForm";
 
-async function Page() {
+function Page() {
   return (
     <React.Fragment>
       <ProductForm />

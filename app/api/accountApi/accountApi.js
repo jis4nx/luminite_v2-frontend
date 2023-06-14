@@ -5,9 +5,9 @@ const accountApi = axios.create({
 });
 
 export const registerUser = async (user) => {
-  return await accountApi.post("/register/", user);
+  return await accountApi.post("/register", user);
 };
 
 export const loginUser = async (user) => {
-  return await accountApi.get("/register/", user);
+  return await accountApi.get("/login", user);
 };

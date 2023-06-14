@@ -26,7 +26,7 @@ export default function NavBar() {
             label="Search here..."
             color="indigo"
             icon={
-              <IconButton className="!absolute" color="indigo">
+              <IconButton className="!absolute mr-0 rounded-md" color="indigo">
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
                   className="text-white"

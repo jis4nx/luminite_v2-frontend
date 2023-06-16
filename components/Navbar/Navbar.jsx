@@ -26,12 +26,12 @@ export default function NavBar() {
             label="Search here..."
             color="indigo"
             icon={
-              <IconButton className="!absolute mr-0 rounded-md" color="indigo">
+              <div className="!absolute mr-0 rounded-md bg-indigo-500 px-[13px] py-2" color="indigo">
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
                   className="text-white"
                 />
-              </IconButton>
+              </div>
             }
           />
         </div>

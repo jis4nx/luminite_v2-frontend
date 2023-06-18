@@ -16,3 +16,8 @@ export const addProduct = async (product) => {
 export const addProductItem = async (item) => {
   return await productAPI.post("/products/", item);
 };
+
+export const getProduct = async () => {
+  const res = await productAPI.get("/product/");
+  return res.data;
+};

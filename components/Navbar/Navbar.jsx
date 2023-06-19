@@ -1,5 +1,10 @@
 "use client";
-import { IconButton, Input, Typography } from "@material-tailwind/react";
+import {
+  Button,
+  IconButton,
+  Input,
+  Typography,
+} from "@material-tailwind/react";
 import { BellIcon } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,8 +13,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import AccountMenu from "@components/AccountMenu/AccountMenu";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function NavBar() {
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   return (
     <nav className="w-screen px-3 py-2 shadow-md bg-white">
       <div className="flex justify-between text-black items-center">
@@ -26,7 +33,10 @@ export default function NavBar() {
             label="Search here..."
             color="indigo"
             icon={
-              <div className="!absolute mr-0 rounded-md bg-indigo-500 px-[13px] py-2" color="indigo">
+              <div
+                className="!absolute mr-0 rounded-md bg-indigo-500 px-[13px] py-2"
+                color="indigo"
+              >
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
                   className="text-white"
@@ -35,7 +45,7 @@ export default function NavBar() {
             }
           />
         </div>
-        <AccountMenu />
+        {isAuthenticated ? <Button>hLel</Button> : <AccountMenu />}
         <div className="flex items-center px-2 gap-3">
           <IconButton variant="text">
             <FontAwesomeIcon

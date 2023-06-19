@@ -2,6 +2,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Button,
   Card,
@@ -11,15 +12,31 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "@app/api/accountApi/accountApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "@app/redux/reducers/auth";
 
 function Login() {
+  const dispatch = useDispatch();
+  const login = useMutation(loginUser);
+  const router = useRouter();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      login.mutate(values, {
+        onSuccess: (res) => {
+          console.log(res.data);
+          dispatch(setUser({ user: values.email, isAuthenticated: true }));
+          if (isAuthenticated) {
+            router.push("/profile");
+          }
+        },
+      });
     },
   });
   const [mounted, setMounted] = React.useState();

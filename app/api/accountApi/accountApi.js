@@ -9,5 +9,5 @@ export const registerUser = async (user) => {
 };
 
 export const loginUser = async (user) => {
-  return await accountApi.get("/login", user);
+  return await accountApi.post("/token", user);
 };

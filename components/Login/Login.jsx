@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -15,13 +15,20 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "@app/api/accountApi/accountApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "@app/redux/reducers/auth";
+import { setUser } from "@redux/reducers/auth";
+import cookie from "cookie";
 
 function Login() {
   const dispatch = useDispatch();
   const login = useMutation(loginUser);
   const router = useRouter();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/profile");
+    }
+  });
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -32,9 +39,6 @@ function Login() {
         onSuccess: (res) => {
           console.log(res.data);
           dispatch(setUser({ user: values.email, isAuthenticated: true }));
-          if (isAuthenticated) {
-            router.push("/profile");
-          }
         },
       });
     },

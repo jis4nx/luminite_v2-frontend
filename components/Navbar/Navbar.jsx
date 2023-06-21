@@ -14,6 +14,7 @@ import {
 import AccountMenu from "@components/AccountMenu/AccountMenu";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import ProfileMenu from "@components/ProfileMenu/ProfileMenu";
 
 export default function NavBar() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -45,7 +46,7 @@ export default function NavBar() {
             }
           />
         </div>
-        {isAuthenticated ? <Button>hLel</Button> : <AccountMenu />}
+        {isAuthenticated ? <ProfileMenu /> : <AccountMenu />}
         <div className="flex items-center px-2 gap-3">
           <IconButton variant="text">
             <FontAwesomeIcon

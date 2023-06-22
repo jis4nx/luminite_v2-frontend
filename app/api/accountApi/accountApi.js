@@ -1,8 +1,7 @@
 import axios from "axios";
-import cookie from "cookie";
 axios.defaults.withCredentials = true;
 
-const accountApi = axios.create({
+export const accountApi = axios.create({
   baseURL: "http://127.0.0.1:8000/account/",
 });
 
@@ -16,4 +15,22 @@ export const loginUser = async (user) => {
 
 export const logoutUser = async () => {
   return await accountApi.get("logout/");
+};
+
+export const verifyToken = async () => {
+  try {
+    const res = await accountApi.get("/token/verify");
+    return res.data;
+  } catch (error) {
+    throw error.response.data;
+  }
+};
+
+export const loadUser = async () => {
+  try {
+    const res = await accountApi.get("/profile");
+    return res.data;
+  } catch (error) {
+    throw error.response.data;
+  }
 };

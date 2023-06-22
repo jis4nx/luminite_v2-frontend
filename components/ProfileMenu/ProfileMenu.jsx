@@ -13,12 +13,15 @@ import Link from "next/link";
 import { logoutUser } from "@app/api/accountApi/accountApi";
 import { useDispatch } from "react-redux";
 import { resetUser } from "@redux/reducers/auth";
+import { useRouter } from "next/navigation";
 
 export default function ProfileMenu() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const logOut = () => {
     dispatch(resetUser());
     logoutUser();
+    router.push("/account/login");
   };
   const [openMenu, setOpenMenu] = React.useState(false);
 

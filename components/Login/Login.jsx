@@ -16,7 +16,6 @@ import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "@app/api/accountApi/accountApi";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@redux/reducers/auth";
-import cookie from "cookie";
 
 function Login() {
   const dispatch = useDispatch();

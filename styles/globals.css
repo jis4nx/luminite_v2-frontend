@@ -66,3 +66,9 @@ input[type="number"] {
   cursor: pointer;
   transition: background 0.2s ease-in-out;
 }
+
+.address-table th, td{
+  text-align: left;
+  padding-left: 50px;
+  padding-top: 5px;
+}

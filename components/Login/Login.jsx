@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  Alert,
   Button,
   Card,
   CardBody,
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@redux/reducers/auth";
 
 function Login() {
+  const [err, setErr] = useState(false);
   const dispatch = useDispatch();
   const login = useMutation(loginUser);
   const router = useRouter();
@@ -39,16 +41,51 @@ function Login() {
           console.log(res.data);
           dispatch(setUser({ user: values.email, isAuthenticated: true }));
         },
+        onError: (error, e) => {
+          if (error.response) {
+            if (error.response.status === 401) {
+              setErr(true);
+            } else {
+              console.log("Request failed with status:", error.response.status);
+            }
+          } else if (error.request) {
+            console.log("Request made, but no response received.");
+          } else {
+            console.log("Error setting up the request:", error.message);
+          }
+          e.preventDefault();
+        },
       });
     },
   });
-  const [mounted, setMounted] = React.useState();
+  const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
 
   return mounted
     ? (
-      <form onSubmit={formik.handleSubmit} className="mt-16">
-        <Card className="w-96 mx-auto py-3">
+      <form onSubmit={formik.handleSubmit} className="mt-10 w-96 mx-auto">
+        {err && (
+          <Alert
+            variant="gradient"
+            color="red"
+            open={err}
+            className="mb-2"
+            action={
+              <Button
+                variant="text"
+                color="white"
+                size="sm"
+                className="!absolute top-3 right-3"
+                onClick={() => setErr(false)}
+              >
+                Close
+              </Button>
+            }
+          >
+            Email or password didnt match
+          </Alert>
+        )}
+        <Card className="py-3">
           <Typography variant="h5" color="indigo" className="mx-auto">
             Login
           </Typography>

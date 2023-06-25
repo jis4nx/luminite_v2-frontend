@@ -1,7 +1,12 @@
 "use client";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loadUser, verifyToken } from "@app/api/accountApi/accountApi";
+import {
+  checkExpiry,
+  getRefresh,
+  loadUser,
+  verifyToken,
+} from "@app/api/accountApi/accountApi";
 import { useQuery } from "react-query";
 import { authenticated } from "@redux/reducers/auth";
 import { loadProfile } from "@redux/reducers/profile";
@@ -15,14 +20,23 @@ function CheckAuth() {
       retry: false,
     },
   );
-  const loadData = useQuery("loadUser", loadUser, { retry: false });
+  const { data: userData } = useQuery("loadUser", loadUser, { retry: false });
+  const { data: expiryData, isSuccess: expirySuccess } = useQuery(
+    "checkExpiry",
+    checkExpiry,
+    { retry: false },
+  );
+  useQuery("getRefresh", getRefresh, {
+    retry: false,
+    enabled: !expiryData?.access,
+  });
+
   useEffect(() => {
-    console.log(loadData.data);
-    if (tokenVerify.isSuccess) {
+    if (tokenVerify.isSuccess && expiryData.access && expiryData.refresh) {
       dispatch(authenticated());
-      dispatch(loadProfile(loadData.data));
+      dispatch(loadProfile(userData));
     }
-  },[dispatch, loadData.data, tokenVerify.isSuccess]);
+  }, [dispatch, userData, tokenVerify.isSuccess, expirySuccess, expiryData]);
 }
 
 export default CheckAuth;

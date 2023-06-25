@@ -14,12 +14,14 @@ import { logoutUser } from "@app/api/accountApi/accountApi";
 import { useDispatch } from "react-redux";
 import { resetUser } from "@redux/reducers/auth";
 import { useRouter } from "next/navigation";
+import { resetProfile } from "@redux/reducers/profile";
 
 export default function ProfileMenu() {
   const router = useRouter();
   const dispatch = useDispatch();
   const logOut = () => {
     dispatch(resetUser());
+    dispatch(resetProfile());
     logoutUser();
     router.push("/account/login");
   };

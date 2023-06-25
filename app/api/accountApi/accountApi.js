@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 axios.defaults.withCredentials = true;
 
 export const accountApi = axios.create({
@@ -10,7 +10,8 @@ export const registerUser = async (user) => {
 };
 
 export const loginUser = async (user) => {
-  return await accountApi.post("/token", user);
+  const res = await accountApi.post("/token", user);
+  return res;
 };
 
 export const logoutUser = async () => {
@@ -31,6 +32,29 @@ export const loadUser = async () => {
     const res = await accountApi.get("/profile");
     return res.data;
   } catch (error) {
-    throw error.response.data;
+    if (error.response) {
+      console.log(error.response.data);
+      if (error.response.status === 401) {
+        throw new Error("user is unauthorized!");
+      }
+    }
+  }
+};
+
+export const checkExpiry = async () => {
+  try {
+    const res = await accountApi.get("/token/expired");
+    return res.data;
+  } catch (err) {
+    throw err.response.data;
+  }
+};
+
+export const getRefresh = async () => {
+  try {
+    const res = await accountApi.get("/token/refresh");
+    return res.data;
+  } catch (err) {
+    throw err.response.data;
   }
 };

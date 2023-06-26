@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { Card, Typography } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Card } from "@material-tailwind/react";
 
 function Profile() {
   const [mounted, setMounted] = React.useState(false);
@@ -18,7 +18,6 @@ function Profile() {
 
   React.useEffect(() => {
     setMounted(true);
-    console.log(address);
   }, []);
   return mounted
     ? (

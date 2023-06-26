@@ -27,6 +27,7 @@ function ProductForm() {
     initialValues: {
       name: "",
       desc: "",
+      base_price: null,
     },
     onSubmit: (values) => {
       const formData = new FormData();
@@ -84,6 +85,17 @@ function ProductForm() {
                 value={formik.values.productDesc}
                 onChange={formik.handleChange}
               />
+              <Input
+                label="Base Price"
+                color="indigo"
+                name="base_price"
+                type="number"
+                size="sm"
+                className="w-3/5"
+                min={0}
+                value={formik.values.base_price}
+                onChange={formik.handleChange}
+              />
 
               <Select
                 options={category && category.data?.map((cat) => ({
@@ -124,7 +136,7 @@ function ProductForm() {
               </div>
             </div>
             <div className="flex items-center mt-4">
-              <Button size="sm" className="mx-auto" type="submit">Add</Button>
+              <Button size="sm" className="mx-auto" type="submit" color="indigo">Add</Button>
             </div>
           </form>
         </Card>

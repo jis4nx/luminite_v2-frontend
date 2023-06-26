@@ -32,7 +32,7 @@ function CheckAuth() {
   });
 
   useEffect(() => {
-    if (tokenVerify.isSuccess && expiryData.access && expiryData.refresh) {
+    if (tokenVerify.isSuccess && expiryData?.access && expiryData?.refresh) {
       dispatch(authenticated());
       dispatch(loadProfile(userData));
     }

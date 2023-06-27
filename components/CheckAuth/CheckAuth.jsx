@@ -1,42 +1,30 @@
 "use client";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-  checkExpiry,
-  getRefresh,
-  loadUser,
-  verifyToken,
-} from "@app/api/accountApi/accountApi";
+import { checkExpiry, getRefresh } from "@app/api/accountApi/accountApi";
 import { useQuery } from "react-query";
-import { authenticated } from "@redux/reducers/auth";
-import { loadProfile } from "@redux/reducers/profile";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 function CheckAuth() {
   const dispatch = useDispatch();
-  const tokenVerify = useQuery(
-    "tokenVerify",
-    verifyToken,
-    {
-      retry: false,
-    },
-  );
-  const { data: userData } = useQuery("loadUser", loadUser, { retry: false });
-  const { data: expiryData, isSuccess: expirySuccess } = useQuery(
+  const router = useRouter();
+  // const user = useSelector((state) => state.user);
+
+  const { data: expiryData } = useQuery(
     "checkExpiry",
     checkExpiry,
     { retry: false },
   );
-  useQuery("getRefresh", getRefresh, {
-    retry: false,
-    enabled: !expiryData?.access,
-  });
 
   useEffect(() => {
-    if (tokenVerify.isSuccess && expiryData?.access && expiryData?.refresh) {
-      dispatch(authenticated());
-      dispatch(loadProfile(userData));
+    if (!expiryData.access) {
+      dispatch(getRefresh());
     }
-  }, [dispatch, userData, tokenVerify.isSuccess, expirySuccess, expiryData]);
+    if (!expiryData.refresh) {
+      router.push("/account/login");
+    }
+  }, [expiryData.access, expiryData.refresh, dispatch]);
 }
 
 export default CheckAuth;

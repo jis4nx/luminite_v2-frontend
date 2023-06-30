@@ -1,6 +1,4 @@
-import {
-  resetUser,
-} from "@redux/reducers/auth";
+import { setLoading, resetUser } from "@redux/reducers/auth";
 import { loadProfile, resetProfile } from "@redux/reducers/profile";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -23,23 +21,33 @@ export const logoutUser = async () => {
   return await accountApi.get("logout/");
 };
 
-export const verifyToken = () => async (dispatch) => {
+// export const verifyToken = () => async (dispatch) => {
+//   try {
+//     const res = await accountApi.get("/token/verify");
+//     if (res.status === 200) {
+//       dispatch(authenticated());
+//       dispatch(loadUser());
+//     } else {
+//       dispatch(resetUser());
+//     }
+//   } catch (error) {
+//     dispatch(resetUser());
+//   }
+// };
+
+export const verifyToken = async () => {
   try {
     const res = await accountApi.get("/token/verify");
-    if (res.status === 200) {
-      dispatch(authenticated());
-      dispatch(loadUser());
-    } else {
-      dispatch(resetUser());
-    }
+    return res;
   } catch (error) {
-    dispatch(resetUser());
+    throw Error(error.response.data);
   }
 };
 
 export const loadUser = () => async (dispatch) => {
   try {
     const res = await accountApi.get("/profile");
+    dispatch(setLoading(true))
     if (res.status === 200) {
       dispatch(loadProfile(res.data));
     } else {
@@ -47,9 +55,10 @@ export const loadUser = () => async (dispatch) => {
     }
   } catch (error) {
     if (error.response) {
-      console.log(error.response.data);
       dispatch(resetProfile());
     }
+  } finally {
+    dispatch(setLoading(false));
   }
 };
 
@@ -64,12 +73,15 @@ export const checkExpiry = async () => {
 
 export const getRefresh = () => async (dispatch) => {
   try {
-    const res = await accountApi.get("/token/refresh");
-    if (res.status === 200) {
-      dispatch(verifyToken());
-      return res;
-    } else {
-      dispatch(resetUser());
+    const token = await verifyToken();
+    if (token.status === 200) {
+      const res = await accountApi.get("/token/refresh");
+      if (res.status === 200) {
+        dispatch(authenticated());
+        return res;
+      } else {
+        dispatch(resetUser());
+      }
     }
   } catch (err) {
     dispatch(resetUser());

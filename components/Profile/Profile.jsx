@@ -8,7 +8,7 @@ import { Card } from "@material-tailwind/react";
 function Profile() {
   const [mounted, setMounted] = React.useState(false);
   const router = useRouter();
-  const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated, isLoading } = useSelector((state) => state.user);
   const { user, address, profile_image } = useSelector((state) =>
     state.profile
   );
@@ -19,7 +19,7 @@ function Profile() {
   React.useEffect(() => {
     setMounted(true);
   }, []);
-  return mounted
+  return mounted && !isLoading
     ? (
       <Card className="mx-auto w-96 mt-5 flex flex-col items-center justify-center p-5 space-y-2">
         {profile_image && (

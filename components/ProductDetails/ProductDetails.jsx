@@ -17,9 +17,6 @@ function ProductDetails({ id }) {
       enabled: !!id,
     },
   );
-  useEffect(() => {
-    console.log(product);
-  }, []);
   return product && (
     <div>
       <section className="px-5 mx-auto">

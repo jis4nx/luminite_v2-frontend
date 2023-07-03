@@ -219,6 +219,24 @@ function ProductDetails({ id }) {
                   />
                 </div>
               </div>
+              <div className="">
+                <p className="font-semibold text-indigo-700 m-0">Features</p>
+                <ul className="space-y-2 featured-lists text-gray-800">
+                  <li>Made with full cotton</li>
+                  <li>Slim fit for any body</li>
+                  <li>QC Passed</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="">
+            <div className="w-4/6 space-y-1">
+              <p className="text-indigo-800 text-xl border-gray-500 border-b-2 py-1">
+                Reviews
+              </p>
+            </div>
+            <div className="mt-5">
+              <Image width={50} height={50} alt="User Profile" />
             </div>
           </div>
         </div>

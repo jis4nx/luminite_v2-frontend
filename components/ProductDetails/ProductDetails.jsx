@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getProductbyId } from "@app/api/productapi/productapi";
 import Image from "next/image";
@@ -9,7 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@material-tailwind/react";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { addToCart } from "@redux/reducers/cart";
+import { useDispatch } from "react-redux";
 function ProductDetails({ id }) {
+  const dispatch = useDispatch();
+  const [qty, setQty] = useState(1);
   const { data: product } = useQuery(
     ["product", id],
     () => getProductbyId(id),
@@ -206,13 +210,35 @@ function ProductDetails({ id }) {
                     </span>
                   </div>
                 </div>
+                <div>
+                  <input
+                    type="number"
+                    min="1"
+                    value={qty}
+                    onChange={(e) => setQty(e.target.value)}
+                  />
+                </div>
               </div>
               <div className="flex items-center">
                 <span className="title-font font-medium text-2xl text-gray-900">
-                  $58.00
+                  BDT {product.base_price} /-
                 </span>
                 <div className="m-10 flex items-center space-x-3">
-                  <Button color="indigo">Add To Cart</Button>
+                  <Button
+                    color="indigo"
+                    onClick={() =>
+                      dispatch(
+                        addToCart({
+                          id: id,
+                          title:product.name,
+                          image:product.product_image,
+                          price: product.base_price,
+                          qty: Number(qty),
+                        }),
+                      )}
+                  >
+                    Add To Cart
+                  </Button>
                   <FontAwesomeIcon
                     icon={faHeart}
                     className="h-7 w-7 text-indigo-700"

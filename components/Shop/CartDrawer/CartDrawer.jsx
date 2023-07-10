@@ -1,17 +1,19 @@
 import React from "react";
 import {
-  Avatar,
   Drawer,
   IconButton,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark, faX } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
+import { removeFromCart } from "@redux/reducers/cart";
+import { useDispatch } from "react-redux";
 import Image from "next/image";
 
 function CartDrawer({ openDrawer, closeDrawer }) {
+  const dispatch = useDispatch();
   const TABLE_HEAD = ["Product", "QTY", "Price", ""];
   const { cartItems, totalPrice } = useSelector((state) => state.cart);
   return (
@@ -101,11 +103,14 @@ function CartDrawer({ openDrawer, closeDrawer }) {
                         </Typography>
                       </td>
                       <td className={classes}>
-                        <Tooltip content="Remove">
-                          <IconButton variant="text" color="red" size="sm">
-                            <FontAwesomeIcon icon={faCircleXmark} size="xl"/>
-                          </IconButton>
-                        </Tooltip>
+                        <IconButton
+                          variant="text"
+                          color="red"
+                          size="sm"
+                          onClick={() => dispatch(removeFromCart({ id: id }))}
+                        >
+                          <FontAwesomeIcon icon={faCircleXmark} size="xl" />
+                        </IconButton>
                       </td>
                     </tr>
                   );

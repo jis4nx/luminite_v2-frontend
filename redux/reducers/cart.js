@@ -5,6 +5,20 @@ const initState = {
   totalPrice: 0,
 };
 
+const setProducts = (products, totalPrice) => {
+  localStorage.setItem(
+    "carts",
+    JSON.stringify({
+      products: products,
+      totalPrice: totalPrice,
+    }),
+  );
+};
+
+const getTotalPrice = (items) => {
+  return items.reduce((sum, item) => sum + item.price * item.qty, 0);
+};
+
 const cartSlice = createSlice({
   name: "cart",
   initialState: initState,
@@ -23,25 +37,17 @@ const cartSlice = createSlice({
         state.cartItems.push(action.payload);
       }
 
-      // Get Total Price of cart items
-      let sum = 0;
-      for (let x = 0; x < state.cartItems.length; x++) {
-        let item = state.cartItems[x];
-        sum += item.price * item.qty;
-      }
-      state.totalPrice = sum;
-
-      localStorage.setItem(
-        "carts",
-        JSON.stringify({
-          products: state.cartItems,
-          totalPrice: state.totalPrice,
-        }),
-      );
+      state.totalPrice = getTotalPrice(state.cartItems);
+      setProducts(state.cartItems, state.totalPrice);
     },
     removeFromCart: (state, action) => {
-      const getIndex = state.cartItems.findIndex(action.payload.id);
-      console.log(getIndex);
+      const getIndex = state.cartItems.findIndex((item) =>
+        item.id === action.payload.id
+      );
+      state.cartItems.splice(getIndex, 1);
+
+      state.totalPrice = getTotalPrice(state.cartItems);
+      setProducts(state.cartItems, state.totalPrice);
     },
   },
 });

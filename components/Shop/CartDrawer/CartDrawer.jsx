@@ -21,7 +21,7 @@ function CartDrawer({ openDrawer, closeDrawer }) {
       placement="right"
       open={openDrawer}
       onClose={closeDrawer}
-      size={400}
+      size={500}
     >
       <div className="">
         <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>

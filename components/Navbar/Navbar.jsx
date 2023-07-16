@@ -11,10 +11,11 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import ProfileMenu from "@components/ProfileMenu/ProfileMenu";
 import CartDrawer from "@components/Shop/CartDrawer/CartDrawer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function NavBar() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const cartCount = useSelector((state) => state.cart.cartItems.length);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const closeDrawer = () => setIsCartOpen(false);
@@ -53,7 +54,7 @@ export default function NavBar() {
           <div className="flex items-center px-2 gap-4 py-2">
             <Badge
               overlap="square"
-              content="5"
+              content={cartCount}
               className="bg-indigo-700 font-bold"
             >
               <IconButton variant="text" onClick={openDrawer}>

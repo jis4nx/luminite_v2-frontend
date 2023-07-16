@@ -11,7 +11,7 @@ async function getProductAttributes() {
 }
 
 async function getProducts() {
-  const res = await fetch(BASE_URL + "/shop/product", {
+  const res = await fetch(BASE_URL + "/shop/items", {
     cache: "no-store",
   });
   const data = await res.json();

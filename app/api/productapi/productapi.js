@@ -18,7 +18,7 @@ export const addProductItem = async (item) => {
 };
 
 export const getProducts = async () => {
-  const res = await productAPI.get("/product/");
+  const res = await productAPI.get("/items/");
   return res.data;
 };
 

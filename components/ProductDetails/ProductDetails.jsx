@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getProductbyId } from "@app/api/productapi/productapi";
 import Image from "next/image";
-import { Breadcrumbs } from "@material-tailwind/react";
+import { Breadcrumbs, Input } from "@material-tailwind/react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
@@ -210,8 +210,10 @@ function ProductDetails({ id }) {
                     </span>
                   </div>
                 </div>
-                <div>
+                <div className="pl-3 flex items-center gap-3">
+                  <p>QTY</p>
                   <input
+                    className="w-16 p-1 bg-transparent border border-indigo-700 rounded-sm focus:outline-none"
                     type="number"
                     min="1"
                     value={qty}
@@ -230,8 +232,8 @@ function ProductDetails({ id }) {
                       dispatch(
                         addToCart({
                           id: id,
-                          title:product.name,
-                          image:product.product_image,
+                          title: product.name,
+                          image: product.product_image,
                           price: product.base_price,
                           qty: Number(qty),
                         }),

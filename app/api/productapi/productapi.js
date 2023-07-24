@@ -22,7 +22,7 @@ export const getProducts = async () => {
   return res.data;
 };
 
-export const getProductbyId = async (id) => {
-  const res = await productAPI.get(`/product/${id}`);
+export const getItembyId = async (id) => {
+  const res = await productAPI.get(`/item/${id}`);
   return res.data;
 };

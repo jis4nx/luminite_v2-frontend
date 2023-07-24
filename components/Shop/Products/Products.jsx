@@ -10,14 +10,8 @@ import {
 } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
-import { setItem, setProduct } from "@redux/reducers/product";
-import { useDispatch } from "react-redux";
-
 function Products() {
   const { data: products } = useQuery("products", getProducts);
-  const dispatch = useDispatch();
-  console.log(products);
-
   return (
     <div className="mx-auto mt-8">
       <div className="grid grid-cols-5 gap-x-3">
@@ -26,25 +20,6 @@ function Products() {
             <div
               className="bg-white rounded-md shadow-md flex flex-col p-4 justify-around"
               key={obj.item.id}
-              onClick={(e) => {
-                dispatch(
-                  setProduct({
-                    id: obj.product.id,
-                    name: obj.product.name,
-                    desc: obj.product.desc,
-                    category: obj.product.category,
-                  }),
-                );
-                dispatch(
-                  setItem({
-                    id: obj.item.id,
-                    size: obj.item.product_size,
-                    color: obj.item.product_color,
-                    image: obj.item.image,
-                    price: obj.item.price,
-                  }),
-                );
-              }}
             >
               <Link
                 href={`/product/${obj.item.id}`}

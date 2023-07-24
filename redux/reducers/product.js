@@ -18,8 +18,11 @@ const productSlice = createSlice({
       const { id, size, color, image, price } = action.payload;
       state.item = { id, size, color, image, price };
     },
+    setItemList(state, action) {
+      state.itemList = action.payload;
+    },
   },
 });
 
-export const { setProduct, setItem } = productSlice.actions;
+export const { setProduct, setItem, setItemList } = productSlice.actions;
 export default productSlice.reducer;

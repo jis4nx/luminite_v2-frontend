@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Drawer,
   IconButton,
@@ -14,8 +14,11 @@ import Image from "next/image";
 
 function CartDrawer({ openDrawer, closeDrawer }) {
   const dispatch = useDispatch();
-  const TABLE_HEAD = ["Product", "QTY", "Price", ""];
+  const TABLE_HEAD = ["Product", "QTY", "Price", "Total", ""];
   const { cartItems, totalPrice } = useSelector((state) => state.cart);
+  const getTotalItems = () => {
+    return cartItems.reduce((sum, item) => sum + item.qty, 0);
+  };
   return (
     <Drawer
       placement="right"
@@ -103,6 +106,9 @@ function CartDrawer({ openDrawer, closeDrawer }) {
                         </Typography>
                       </td>
                       <td className={classes}>
+                        {price * qty}
+                      </td>
+                      <td className={classes}>
                         <IconButton
                           variant="text"
                           color="red"
@@ -120,7 +126,11 @@ function CartDrawer({ openDrawer, closeDrawer }) {
           </table>
           <div className="flex ml-2 justify-between mt-2 ">
             <p>Total Price</p>
-            <p className="mr-5">{totalPrice} /-</p>
+            <p className="mr-5 font-semibold">BDT {totalPrice}</p>
+          </div>
+          <div className="flex ml-2 justify-between mt-2 ">
+            <p>Total Items</p>
+            <p className="mr-5 font-semibold">{getTotalItems()} Pc</p>
           </div>
         </div>
       </div>

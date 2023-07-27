@@ -30,7 +30,6 @@ function ProductDetails({ id }) {
   useEffect(() => {
     setMount(true);
     if (mount && productData?.product && productData?.items) {
-      console.log(productData.items)
       dispatch(
         setProduct({
           id: productData.product.id,
@@ -261,11 +260,11 @@ function ProductDetails({ id }) {
                     onClick={() =>
                       dispatch(
                         addToCart({
-                          // id: id,
-                          // title: product.name,
-                          // image: product.product_image,
-                          // price: product.base_price,
-                          // qty: Number(qty),
+                          id: item.id,
+                          title: product.name,
+                          image: item.image,
+                          price: item.price,
+                          qty: Number(qty),
                         }),
                       )}
                   >

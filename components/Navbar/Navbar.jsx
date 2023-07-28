@@ -53,7 +53,6 @@ export default function NavBar() {
           {isAuthenticated ? <ProfileMenu /> : <AccountMenu />}
           <div className="flex items-center px-2 gap-4 py-2">
             <Badge
-              overlap="square"
               content={cartCount}
               className="bg-indigo-700 font-bold"
             >

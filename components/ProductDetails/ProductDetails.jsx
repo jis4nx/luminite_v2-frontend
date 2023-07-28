@@ -13,6 +13,7 @@ import { addToCart } from "@redux/reducers/cart";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { setItem, setItemList, setProduct } from "@redux/reducers/product";
+import { setProducts } from "@redux/reducers/checkout";
 
 function ProductDetails({ id }) {
   const { product, item, itemList } = useSelector((state) => state.product);
@@ -53,7 +54,7 @@ function ProductDetails({ id }) {
   return productData && mount && (
     <div>
       <section className="px-5 mx-auto">
-        <div className="container">
+        <div className="">
           <div className="lg:w-4/5 mx-auto flex flex-wrap mb-16 mt-8">
             <Breadcrumbs separator="-" color="indigo">
               <Link
@@ -250,31 +251,44 @@ function ProductDetails({ id }) {
                   />
                 </div>
               </div>
-              <div className="flex items-center">
-                <span className="title-font font-medium text-2xl text-gray-900">
-                  BDT {item.price} /-
-                </span>
-                <div className="m-10 flex items-center space-x-3">
+              <div className="my-5 space-y-5">
+                <div className="flex items-center gap-10">
+                  <span className="title-font font-medium text-2xl text-gray-900">
+                    BDT {item.price} /-
+                  </span>
+                  <div className="flex items-center space-x-3">
+                    <Button
+                      size="sm"
+                      color="indigo"
+                      onClick={() =>
+                        dispatch(
+                          addToCart({
+                            id: item.id,
+                            title: product.name,
+                            image: item.image,
+                            price: item.price,
+                            qty: Number(qty),
+                          }),
+                        )}
+                    >
+                      Add To Cart
+                    </Button>
+                    <FontAwesomeIcon
+                      icon={faHeart}
+                      className="h-7 w-7 text-indigo-700"
+                    />
+                  </div>
+                </div>
+                <Link href="/checkout">
                   <Button
                     color="indigo"
-                    onClick={() =>
-                      dispatch(
-                        addToCart({
-                          id: item.id,
-                          title: product.name,
-                          image: item.image,
-                          price: item.price,
-                          qty: Number(qty),
-                        }),
-                      )}
+                    className="my-5"
+                    size="sm"
+                    onClick={() => dispatch(setProducts(item))}
                   >
-                    Add To Cart
+                    Buy Now
                   </Button>
-                  <FontAwesomeIcon
-                    icon={faHeart}
-                    className="h-7 w-7 text-indigo-700"
-                  />
-                </div>
+                </Link>
               </div>
               <div className="">
                 <p className="font-semibold text-indigo-700 m-0">Features</p>
@@ -291,9 +305,6 @@ function ProductDetails({ id }) {
               <p className="text-indigo-800 text-xl border-gray-500 border-b-2 py-1">
                 Reviews
               </p>
-            </div>
-            <div className="mt-5">
-              <Image width={50} height={50} alt="User Profile" />
             </div>
           </div>
         </div>

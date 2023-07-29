@@ -284,7 +284,14 @@ function ProductDetails({ id }) {
                     color="indigo"
                     className="my-5"
                     size="sm"
-                    onClick={() => dispatch(setProducts(item))}
+                    onClick={() =>
+                      dispatch(
+                        setProducts({
+                          ...item,
+                          title: product.name,
+                          qty: qty,
+                        }),
+                      )}
                   >
                     Buy Now
                   </Button>

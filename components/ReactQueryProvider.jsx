@@ -8,7 +8,6 @@ const Layout = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 };

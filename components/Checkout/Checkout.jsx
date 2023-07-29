@@ -1,8 +1,8 @@
 "use client";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import AddressForm from "./AddressForm";
+import OrderSummary from "./OrderSummary";
 import {
   Button,
   Card,
@@ -11,6 +11,7 @@ import {
   Input,
   Typography,
 } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
 function Checkout() {
   const { products } = useSelector((state) => state.checkout);
   const router = useRouter();
@@ -21,18 +22,21 @@ function Checkout() {
   // }, [router, products]);
 
   return (
-    <section>
+    <div>
       <div>
         <p className="p-3 text-xl text-indigo-900">Checkout</p>
       </div>
-
-      <div class="flex">
-        <div className=" basis-3/5">
-          <AddressForm />
+      <section className="">
+        <div class="flex">
+          <div className="w-3/5 rounded-md">
+            <AddressForm />
+          </div>
+          <div className="bg-indigo-400 p-5">
+            <OrderSummary />
+          </div>
         </div>
-        <div className="bg-blue-300 p-4">Card 2 - 40%</div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
 

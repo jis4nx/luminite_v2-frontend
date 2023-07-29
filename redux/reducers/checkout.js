@@ -12,18 +12,25 @@ const checkOutSlice = createSlice({
   initialState: initState,
   reducers: {
     setProducts: (state, action) => {
+      state.products = [];
       const productIndex = state.products.findIndex((item) =>
         item.id === action.payload.id
       );
-      if (productIndex === -1) {
+      if (Array.isArray(action.payload)) {
+        action.payload.forEach((item) => {
+          state.products.push(item);
+        });
+      } else if (productIndex === -1) {
         state.products.push(action.payload);
-        // setValue("product", state.products);
       }
+      return state;
+    },
+    resetProducts: (state) => {
       return state;
     },
   },
 });
 
-export const { setProducts } = checkOutSlice.actions;
+export const { setProducts, resetProducts } = checkOutSlice.actions;
 
 export default checkOutSlice.reducer;

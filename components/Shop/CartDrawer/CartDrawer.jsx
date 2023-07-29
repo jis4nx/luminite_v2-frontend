@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import {
+  Button,
   Drawer,
   IconButton,
-  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 import { removeFromCart } from "@redux/reducers/cart";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
+import Link from "next/link";
+import { setProducts } from "@redux/reducers/checkout";
 
 function CartDrawer({ openDrawer, closeDrawer }) {
   const dispatch = useDispatch();
@@ -26,10 +28,18 @@ function CartDrawer({ openDrawer, closeDrawer }) {
       onClose={closeDrawer}
       size={500}
     >
-      <div className="">
-        <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
-          <FontAwesomeIcon icon={faX} className="text-indigo-700" />
-        </IconButton>
+      <div>
+        <div className="flex justify-between p-3">
+          <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
+            <FontAwesomeIcon icon={faX} className="text-indigo-700" />
+          </IconButton>
+          <Link href="/checkout">
+            <Button color="indigo" onClick={() => dispatch(setProducts(cartItems))}>
+              Checkout
+            </Button>
+          </Link>
+        </div>
+
         <div className="p-3">
           <table className="w-full min-w-max table-auto text-left border-b-2 border-gray-600">
             <thead>

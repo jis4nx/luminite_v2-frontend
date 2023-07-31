@@ -1,4 +1,4 @@
-import { setLoading, resetUser } from "@redux/reducers/auth";
+import { resetUser, setLoading } from "@redux/reducers/auth";
 import { loadProfile, resetProfile } from "@redux/reducers/profile";
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -47,7 +47,7 @@ export const verifyToken = async () => {
 export const loadUser = () => async (dispatch) => {
   try {
     const res = await accountApi.get("/profile");
-    dispatch(setLoading(true))
+    dispatch(setLoading(true));
     if (res.status === 200) {
       dispatch(loadProfile(res.data));
     } else {
@@ -86,4 +86,9 @@ export const getRefresh = () => async (dispatch) => {
   } catch (err) {
     dispatch(resetUser());
   }
+};
+
+export const getAddress = async () => {
+  const res = await accountApi.get("/address");
+  return res.data;
 };

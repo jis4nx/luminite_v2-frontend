@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initState = { user: null, address: "", profile_image: null };
+const initState = { id: "", user: null, address: "", profile_image: null };
 
 const profileSlice = createSlice({
   name: "profile",
   initialState: initState,
   reducers: {
     loadProfile: (state, action) => {
+      state.id = action.payload.id;
       state.user = action.payload?.user.email;
       state.address = action.payload?.address;
       state.profile_image = action.payload?.image;

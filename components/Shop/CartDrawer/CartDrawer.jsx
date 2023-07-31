@@ -34,7 +34,13 @@ function CartDrawer({ openDrawer, closeDrawer }) {
             <FontAwesomeIcon icon={faX} className="text-indigo-700" />
           </IconButton>
           <Link href="/checkout">
-            <Button color="indigo" onClick={() => dispatch(setProducts(cartItems))}>
+            <Button
+              color="indigo"
+              onClick={() => {
+                dispatch(setProducts(cartItems));
+                closeDrawer();
+              }}
+            >
               Checkout
             </Button>
           </Link>

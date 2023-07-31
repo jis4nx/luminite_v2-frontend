@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
   products: [],
+  delivery: { address: "", delivery_method: "" },
+  payment: { payment_type: "", account_no: "" },
   // products: sessionStorage.getItem("product")
   //   ? JSON.parse(sessionStorage.getItem("product"))
   //   : [],
@@ -28,9 +30,28 @@ const checkOutSlice = createSlice({
     resetProducts: (state) => {
       return state;
     },
+    setDeliveryMethod: (state, action) => {
+      state.delivery.delivery_method = action.payload;
+    },
+    setDeliveryAddress: (state, action) => {
+      state.delivery.address = action.payload;
+    },
+    setPaymentType: (state, action) => {
+      state.payment.payment_type = action.payload;
+    },
+    setPaymentAccount: (state, action) => {
+      state.payment.account_no = action.payload.account;
+    },
   },
 });
 
-export const { setProducts, resetProducts } = checkOutSlice.actions;
+export const {
+  setProducts,
+  resetProducts,
+  setDeliveryMethod,
+  setDeliveryAddress,
+  setPaymentType,
+  setPaymentAccount,
+} = checkOutSlice.actions;
 
 export default checkOutSlice.reducer;

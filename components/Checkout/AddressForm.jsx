@@ -16,11 +16,11 @@ function AddressForm() {
       </p>
       <div className="flex flex-col p-5 w-3/5 gap-3">
         <div>
-          <Typography variant="small" color="indigo">Address Line 1</Typography>
+          <Typography variant="small" color="gray" className="font-normal">Address Line 1</Typography>
           <Input type="text"  color="indigo"/>
         </div>
         <div>
-          <Typography variant="small" color="indigo">Address Line 2</Typography>
+          <Typography variant="small" color="gray" className="font-normal">Address Line 2</Typography>
           <Input type="text" color="indigo"/>
         </div>
 

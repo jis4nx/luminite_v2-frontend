@@ -2,6 +2,7 @@ import axios from "axios";
 
 const productAPI = axios.create({
   baseURL: "http://127.0.0.1:8000/shop/",
+  withCredentials: true,
 });
 
 export const getCategories = async () => {
@@ -27,8 +28,10 @@ export const getItembyId = async (id) => {
   return res.data;
 };
 
-
-
 export const orderProduct = async (item) => {
   return await productAPI.post("/order/", item);
+};
+export const getUserOrders = async () => {
+  const res = await productAPI.get("/user-orders/");
+  return res.data;
 };

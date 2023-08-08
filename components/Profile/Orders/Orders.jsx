@@ -6,15 +6,6 @@ import OrderDetail from "./OrderDetail";
 
 function Orders() {
   const { data: ordersData } = useQuery("userOrders", getUserOrders);
-
-  useEffect(() => {
-    if (ordersData) {
-      ordersData.forEach((order) => {
-        console.log(order.order);
-      });
-    }
-  }, [ordersData]);
-
   return ordersData && (
     <div className="flex justify-center items-center">
       <div className="w-full min-w-max flex flex-col">

@@ -1,19 +1,25 @@
+"use client";
 import { useState } from "react";
-import { Button, Collapse, Typography } from "@material-tailwind/react";
+import { Collapse, Typography } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
 import { Chip } from "@material-tailwind/react";
 import {
   faCalendarDays,
   faChevronDown,
+  faEye,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const TABLE_HEAD = ["Product", "Quantity", "Price", "Payment"];
+import BASE_URL from "@app/data";
+
 const chipColor = { PD: "amber", CD: "light-blue", DL: "green" };
 const chipValue = { PD: "PENDING", CD: "CONFIRMED", DL: "DELIVRED" };
+
 function OrderDetail({ ordersData }) {
   const [openOrder, setOpenOrder] = useState({});
+
   const toggleOpen = (orderId) => {
     if (openOrder === orderId) {
       setOpenOrder(null);
@@ -52,6 +58,14 @@ function OrderDetail({ ordersData }) {
                 color={chipColor[order.order.status]}
                 value={chipValue[order.order.status]}
               />
+              <a
+                href={`${BASE_URL}/shop/invoice/${order.order.id}`}
+                target="_blank"
+                className="flex items-center gap-1 cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faEye} className="text-indigo-800" />
+                <p className="text-sm">Invoice</p>
+              </a>
 
               <FontAwesomeIcon
                 icon={faChevronDown}

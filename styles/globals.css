@@ -22,7 +22,7 @@ input::-webkit-inner-spin-button {
 }
 
 .btn-selected input[type="radio"]:checked {
-  @apply border-black scale-105;
+  @apply border-2 border-white antialiased scale-105;
 }
 
 .size-btn {
@@ -40,6 +40,11 @@ input::-webkit-inner-spin-button {
 
 .product-input {
   @apply border-b-2 border-site-primary focus:outline-none text-indigo-600 font-medium;
+}
+
+
+.attribute-filter{
+  @apply border-2 border-gray-300 rounded-full w-6 h-6 focus:scale-125 transition-transform duration-150 mx-1 shadow-md
 }
 .m-btn + .m-btn {
   margin-left: 10px;

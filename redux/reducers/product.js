@@ -15,8 +15,8 @@ const productSlice = createSlice({
       state.product = { id, name, desc, category };
     },
     setItem(state, action) {
-      const { id, size, color, image, price } = action.payload;
-      state.item = { id, size, color, image, price };
+      const { id, size, color, image, price, stockQty } = action.payload;
+      state.item = { id, size, color, image, price, stockQty };
     },
     setItemList(state, action) {
       state.itemList = action.payload;

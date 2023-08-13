@@ -35,3 +35,9 @@ export const getUserOrders = async () => {
   const res = await productAPI.get("/user-orders/");
   return res.data;
 };
+
+export const searchProduct = (name) => async (dispatch) => {
+  const res = await productAPI.get(`/search=${name}`);
+  console.log(res.data)
+  return res.data;
+};

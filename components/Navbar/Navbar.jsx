@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import ProfileMenu from "@components/ProfileMenu/ProfileMenu";
 import CartDrawer from "@components/Shop/CartDrawer/CartDrawer";
 import { useEffect, useState } from "react";
+import { searchProduct } from "@app/api/productapi/productapi";
 
 export default function NavBar() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);

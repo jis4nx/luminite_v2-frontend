@@ -30,7 +30,6 @@ function SignUp() {
     },
     onSubmit: (values) => {
       let data = { ...values, type: "CUSTOMER" };
-      console.log(data);
       signUpUser.mutate(data, {
         onSuccess: () => {
           setRegistered(true);

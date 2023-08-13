@@ -37,7 +37,7 @@ function ProductDetails({ id }) {
 
   const handleBuy = () => {
     if (!(qty >= item.stockQty)) {
-      dispatch(setProducts({ ...item, title: product.title, qty: qty }));
+      dispatch(setProducts({ ...item, title: product.name, qty: qty }));
       router.push("/checkout/");
     }
   };
@@ -67,6 +67,7 @@ function ProductDetails({ id }) {
       dispatch(
         setItem({
           id: productData.item.id,
+          title: product.name,
           size: productData.item.product_size,
           color: productData.item.product_color,
           image: productData.item.image,
@@ -133,10 +134,15 @@ function ProductDetails({ id }) {
                 </div>
                 <div
                   className={`flex mt-6 items-center pb-5 border-b-2 border-gray-100 ${
-                    itemList.length > 1 && `mb-5`
+                    itemList.length && `mb-5`
                   }`}
                 >
-                  {itemList.length > 1 && <AttributeFilter items={itemList} />}
+                  {itemList.length && (
+                    <AttributeFilter
+                      items={itemList}
+                      selectedItem={item}
+                    />
+                  )}
                 </div>
                 <div className="flex items-center gap-10 text-gray-900">
                   <div className="flex items-center gap-2">

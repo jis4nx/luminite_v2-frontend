@@ -37,7 +37,6 @@ function Payment() {
       order: orderData,
       items: items,
     };
-    console.log(data);
     setOrderSuccess(true);
     orderProductItem.mutate(data, {
       onSuccess: () => {

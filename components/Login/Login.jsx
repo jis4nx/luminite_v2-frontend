@@ -38,7 +38,6 @@ function Login() {
     onSubmit: (values) => {
       login.mutate(values, {
         onSuccess: (res) => {
-          console.log(res.data);
           dispatch(setUser({ user: values.email, isAuthenticated: true }));
         },
         onError: (error, e) => {

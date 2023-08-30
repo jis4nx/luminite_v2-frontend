@@ -5,6 +5,7 @@ import cartReducer from "./reducers/cart";
 import { createWrapper } from "next-redux-wrapper";
 import productReducer from "./reducers/product";
 import checkOutReducer from "./reducers/checkout";
+import searchResultReducer from "./reducers/searchResult";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     cart: cartReducer,
     product: productReducer,
     checkout: checkOutReducer,
+    searchResult: searchResultReducer,
   },
 });
 const makeStore = () => store;

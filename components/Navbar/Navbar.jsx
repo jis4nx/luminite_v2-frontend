@@ -1,26 +1,50 @@
 "use client";
-import { Badge, IconButton, Input, Typography } from "@material-tailwind/react";
+import {
+  Badge,
+  Button,
+  IconButton,
+  Input,
+  Typography,
+} from "@material-tailwind/react";
 import { BellIcon } from "@heroicons/react/24/solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartShopping,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faX } from "@fortawesome/free-solid-svg-icons";
 import AccountMenu from "@components/AccountMenu/AccountMenu";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProfileMenu from "@components/ProfileMenu/ProfileMenu";
 import CartDrawer from "@components/Shop/CartDrawer/CartDrawer";
+import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { searchProduct } from "@app/api/productapi/productapi";
+import { SearchProduct } from "./SearchProduct";
+import { useRouter } from "next/navigation";
+import { setSearchResult } from "@redux/reducers/searchResult";
 
 export default function NavBar() {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const cartCount = useSelector((state) => state.cart.cartItems.length);
-
+  const [searchQuery, setSearchQuery] = useState();
+  const [inpFocus, setInpFocus] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const closeDrawer = () => setIsCartOpen(false);
   const openDrawer = () => setIsCartOpen(true);
+
+  const { data: searchData } = useQuery(
+    ["search", searchQuery],
+    () => searchProduct(searchQuery),
+    {
+      enabled: !!searchQuery,
+    },
+  );
+
+  const handleClick = () => {
+    dispatch(setSearchResult({ products: searchData }));
+    router.push("/shop/search");
+    setInpFocus(false);
+  };
   return (
     <>
       <CartDrawer openDrawer={isCartOpen} closeDrawer={closeDrawer} />
@@ -34,22 +58,45 @@ export default function NavBar() {
             </Link>
           </div>
           <div className="w-5/12">
-            <Input
-              type="search"
-              label="Search here..."
-              color="indigo"
-              icon={
-                <div
-                  className="!absolute mr-0 rounded-md bg-indigo-500 px-[13px] py-2"
-                  color="indigo"
-                >
-                  <FontAwesomeIcon
-                    icon={faMagnifyingGlass}
-                    className="text-white"
-                  />
-                </div>
-              }
-            />
+            <div className="relative flex w-full max-w-[24rem]">
+              <Input
+                label="Search"
+                className="pr-20"
+                value={searchQuery}
+                onFocus={() => setInpFocus(true)}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                containerProps={{
+                  className: "min-w-0",
+                }}
+              />
+              {searchQuery &&
+                (
+                  <div onClick={() => setSearchQuery("")}>
+                    <FontAwesomeIcon
+                      icon={faX}
+                      size="sm"
+                      className="!absolute top-3 right-24 text-red-500 bg-gray-200"
+                    />
+                  </div>
+                )}
+
+              <Button
+                onClick={handleClick}
+                size="sm"
+                className="!absolute right-1 top-1 rounded bg-indigo-700"
+              >
+                Search
+              </Button>
+            </div>
+            {inpFocus && (
+              <div>
+                <SearchProduct
+                  items={searchData}
+                  handleClickProduct={() => setInpFocus(false)}
+                  query={searchQuery}
+                />
+              </div>
+            )}
           </div>
           {isAuthenticated ? <ProfileMenu /> : <AccountMenu />}
           <div className="flex items-center px-2 gap-4 py-2">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReactSlider from "react-slider";
 import "../slider.css";
 import { setFilterItems } from "@redux/reducers/searchResult";
@@ -8,21 +8,21 @@ import { Checkbox, Input } from "@material-tailwind/react";
 function Filter({ products }) {
   const [userInp, setUserInp] = useState({ min: 50, max: 30000 });
   const [userSize, setUserSize] = useState([]);
-  const [filterSize, setFilterSize] = useState();
+  const [userColor, setUserColor] = useState([]);
   const dispatch = useDispatch();
-  useEffect(() => {
-    const sizes = new Set(
-      products.flatMap((product) =>
-        product.items.map((item) => item.product_size)
-      ),
-    );
-    setFilterSize([...sizes]);
-  }, []);
+  const { attributes } = useSelector((state) => state.searchResult);
 
   useEffect(() => {
-    dispatch(setFilterItems({ price: userInp, sizes: userSize }));
-  }, [userInp, userSize]);
+    dispatch(setFilterItems({ price: userInp, sizes: userSize, colors: userColor }));
+  }, [userInp, userSize, userColor]);
 
+  const handleFilterColor = (color, e) => {
+    if (e) {
+      setUserColor([...userColor, color]);
+    } else {
+      setUserColor(userColor.filter((item) => item !== color));
+    }
+  };
   const handleFilterSize = (size, e) => {
     if (e) {
       setUserSize([...userSize, size]);
@@ -31,7 +31,7 @@ function Filter({ products }) {
     }
   };
 
-  return filterSize && (
+  return attributes && (
     <div className="flex flex-col gap-3">
       <section className="space-y-5  bg-white shadow-sm p-3">
         <div>
@@ -61,12 +61,14 @@ function Filter({ products }) {
             type="number"
             value={userInp.min}
             min={50}
+            max={30000}
             onChange={(e) => setUserInp({ ...userInp, min: e.target.value })}
           />
           <Input
             type="number"
             value={userInp.max}
-            max={100000}
+            min={50}
+            max={30000}
             onChange={(e) => setUserInp({ ...userInp, max: e.target.value })}
           />
         </div>
@@ -74,7 +76,7 @@ function Filter({ products }) {
       <section className="bg-white shadow-sm p-3">
         <p className="p-3 text-gray-800 text-lg">Size</p>
         <div className="space-x-5">
-          {filterSize.map((size) => {
+          {attributes.sizes.map((size) => {
             return (
               <Checkbox
                 label={size}
@@ -87,7 +89,26 @@ function Filter({ products }) {
           })}
         </div>
       </section>
-      <section>
+      <section className="bg-white shadow-sm p-3">
+        <p className="p-3 text-gray-800 text-lg">Size</p>
+        <div className="flex">
+          {attributes.colors.map((color) => {
+            return (
+              <label className="checkboxColor" key={color}>
+                <input
+                  type="checkbox"
+                  onChange={(e) =>
+                    handleFilterColor(color, e.target.checked)}
+                />
+                <span
+                  className={`mark attribute-filter`}
+                  style={{ backgroundColor: `${color}` }}
+                >
+                </span>
+              </label>
+            );
+          })}
+        </div>
       </section>
     </div>
   );

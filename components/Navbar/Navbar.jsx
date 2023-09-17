@@ -34,7 +34,7 @@ export default function NavBar() {
 
   const { data: searchData } = useQuery(
     ["search", searchQuery],
-    () => searchProduct(searchQuery),
+    () => searchProduct("product", searchQuery),
     {
       enabled: !!searchQuery,
     },

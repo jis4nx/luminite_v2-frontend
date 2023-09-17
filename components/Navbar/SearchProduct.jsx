@@ -17,7 +17,7 @@ export function SearchProduct({ items, handleClickProduct, query }) {
     handleClickProduct();
   };
   return (
-    <Card className="w-full mt-2">
+    <Card className="mt-2 absolute w-[28%]">
       {items && items.length && query
         ? (
           <List>

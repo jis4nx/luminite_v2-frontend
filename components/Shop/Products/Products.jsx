@@ -2,12 +2,6 @@
 import React from "react";
 import { getProducts } from "@app/api/productapi/productapi";
 import { useQuery } from "react-query";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Typography,
-} from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
 function Products() {

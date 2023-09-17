@@ -1,37 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactSlider from "react-slider";
 import "../slider.css";
 import { setFilterItems } from "@redux/reducers/searchResult";
 import { Checkbox, Input } from "@material-tailwind/react";
+import { useMutation } from "@tanstack/react-query";
+import { filterProduct } from "@app/api/productapi/productapi";
 
 function Filter({ products }) {
   const [userInp, setUserInp] = useState({ min: 50, max: 30000 });
-  const [userSize, setUserSize] = useState([]);
-  const [userColor, setUserColor] = useState([]);
+  const [userValue, setUserValue] = useState({});
   const dispatch = useDispatch();
-  const { attributes } = useSelector((state) => state.searchResult);
+  const { product_attrs } = useSelector((state) => state.searchResult);
+
+  const filterProducts = useMutation(filterProduct);
 
   useEffect(() => {
-    dispatch(setFilterItems({ price: userInp, sizes: userSize, colors: userColor }));
-  }, [userInp, userSize, userColor]);
+    let data = { price: { ...userInp }, attributes: { ...userValue } };
+    filterProducts.mutate(data, {
+      onSuccess: (res) => {
+        dispatch(setFilterItems({ items: res }));
+      },
+    });
+  }, [userValue, userInp]);
 
-  const handleFilterColor = (color, e) => {
-    if (e) {
-      setUserColor([...userColor, color]);
+  const handleAttrValue = (key, value, e) => {
+    const updatedUserValue = { ...userValue };
+    if (!e) {
+      if (updatedUserValue.hasOwnProperty(key)) {
+        updatedUserValue[key] = updatedUserValue[key].filter((item) =>
+          item !== value
+        );
+      }
     } else {
-      setUserColor(userColor.filter((item) => item !== color));
+      if (!updatedUserValue.hasOwnProperty(key)) {
+        updatedUserValue[key] = [];
+      }
+      if (!updatedUserValue[key].includes(value)) {
+        updatedUserValue[key].push(value);
+      }
     }
-  };
-  const handleFilterSize = (size, e) => {
-    if (e) {
-      setUserSize([...userSize, size]);
-    } else {
-      setUserSize(userSize.filter((item) => item !== size));
-    }
+    setUserValue(updatedUserValue);
   };
 
-  return attributes && (
+  return product_attrs && (
     <div className="flex flex-col gap-3">
       <section className="space-y-5  bg-white shadow-sm p-3">
         <div>
@@ -62,54 +74,44 @@ function Filter({ products }) {
             value={userInp.min}
             min={50}
             max={30000}
-            onChange={(e) => setUserInp({ ...userInp, min: e.target.value })}
+            onChange={(e) => {
+              setUserInp({ ...userInp, min: e.target.value });
+            }}
           />
           <Input
             type="number"
             value={userInp.max}
             min={50}
             max={30000}
-            onChange={(e) => setUserInp({ ...userInp, max: e.target.value })}
+            onChange={(e) => {
+              setUserInp({ ...userInp, max: e.target.value });
+            }}
           />
         </div>
       </section>
-      <section className="bg-white shadow-sm p-3">
-        <p className="p-3 text-gray-800 text-lg">Size</p>
-        <div className="space-x-5">
-          {attributes.sizes.map((size) => {
-            return (
-              <Checkbox
-                label={size}
-                className="text-lg text-red-500"
-                key={size}
-                color="indigo"
-                onChange={(e) => handleFilterSize(size, e.target.checked)}
-              />
-            );
-          })}
-        </div>
-      </section>
-      <section className="bg-white shadow-sm p-3">
-        <p className="p-3 text-gray-800 text-lg">Size</p>
-        <div className="flex">
-          {attributes.colors.map((color) => {
-            return (
-              <label className="checkboxColor" key={color}>
-                <input
-                  type="checkbox"
-                  onChange={(e) =>
-                    handleFilterColor(color, e.target.checked)}
-                />
-                <span
-                  className={`mark attribute-filter`}
-                  style={{ backgroundColor: `${color}` }}
-                >
-                </span>
-              </label>
-            );
-          })}
-        </div>
-      </section>
+      {Object.entries(product_attrs).map((item) => {
+        const [k, v] = item;
+        return (
+          <section className="bg-white shadow-sm p-3" key={k}>
+            <p className="p-3 text-gray-800 text-lg">{k.toUpperCase()}</p>
+            <div className="space-x-5">
+              {v.map((item) => {
+                return (
+                  <Checkbox
+                    label={item}
+                    className="text-lg text-red-500"
+                    key={item}
+                    color="indigo"
+                    value={item}
+                    onChange={(e) =>
+                      handleAttrValue(k, e.target.value, e.target.checked)}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        );
+      })}
     </div>
   );
 }

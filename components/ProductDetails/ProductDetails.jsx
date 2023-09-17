@@ -87,7 +87,7 @@ function ProductDetails({ id }) {
             <div className="lg:w-4/5 mx-auto flex flex-wrap mb-16 mt-8">
               <Breadcrumbs separator="-" color="indigo">
                 <Link
-                  href="/"
+                  href="#"
                   className="opacity-60 text-indigo-500 hover:text-indigo-900"
                 >
                   <FontAwesomeIcon icon={faHouse} size="sm" />
@@ -98,16 +98,21 @@ function ProductDetails({ id }) {
                 >
                   <span>Products</span>
                 </Link>
-                {product.category.parent && (
-                  <Link
-                    href="#"
-                    className="text-indigo-500 hover:text-indigo-900"
-                  >
-                    {product.category.parent}
-                  </Link>
+                {product.category.parent?.length && (
+                  product.category.parent.map((parent) => {
+                    return (
+                      <Link
+                        href={`/product/category/${parent.id}`}
+                        key={parent.id}
+                        className="text-indigo-500 hover:text-indigo-900"
+                      >
+                        {parent.name}
+                      </Link>
+                    );
+                  })
                 )}
                 <Link
-                  href="#"
+                  href={`/product/category/${product.category.id}`}
                   className="text-indigo-500 hover:text-indigo-900"
                 >
                   {product.category.name}

@@ -33,13 +33,13 @@ function OrderDetail({ ordersData }) {
       {ordersData &&
         ordersData.map((order) => (
           <div key={order.order.id} className="ml-10 space-y-5">
-            <div className="flex justify-between p-2">
-              <Typography variant="lead" className="text-red-500 font-medium">
+            <div className="flex justify-between p-2 items-center space-x-8">
+              <Typography variant="body" className="text-red-500 font-medium">
                 ORDER #{order.order.id}
               </Typography>
               <div className="flex gap-1 items-center">
-                <div className="bg-blue-100 p-[4px] rounded-sm">
-                  <FontAwesomeIcon icon={faLocationDot} className="w-4 h-4" />
+                <div className="bg-blue-100 rounded-sm">
+                  <FontAwesomeIcon icon={faLocationDot} className="w-3 h-3" />
                 </div>
                 <p className="text-sm text-indigo-400">
                   {order.order.deliveryAddress}

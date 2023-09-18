@@ -3,15 +3,16 @@ import { IconButton } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
-import { getAddress } from "@app/api/accountApi/accountApi";
-import { useQuery } from "react-query";
 import { setDeliveryAddress } from "@redux/reducers/checkout";
 import { useDispatch } from "react-redux";
+import { useUserAdressQuery } from "@hooks/addressQuery";
+import AddressDialog from "@components/UserProfile/AddressDialog";
 
 function Address() {
-  const { data: addressData } = useQuery("address", getAddress);
+  const { data: addressData } = useUserAdressQuery();
   const [addressList, setAddressList] = useState();
   const [defaultAddress, setDefaultAddress] = useState();
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
   const handleAddressChange = (selectedOption) => {
@@ -56,7 +57,7 @@ function Address() {
   }, [addressData, addressList, dispatch]);
 
   return addressList && addressData && defaultAddress && (
-    <div className="p-5">
+    <div className="">
       <div className="flex items-center gap-2 p-3 rounded-md">
         <IconButton
           variant="gradient"
@@ -80,10 +81,14 @@ function Address() {
       </div>
       <div className="flex mt-5 items-center gap-2 pl-5">
         <FontAwesomeIcon icon={faPlus} className="text-indigo-700" />
-        <p className="text-sm text-indigo-700 cursor-pointer hover:text-indigo-900">
+        <p
+          className="text-sm text-indigo-700 cursor-pointer hover:text-indigo-900"
+          onClick={() => setOpen(true)}
+        >
           Create new address
         </p>
       </div>
+      {open ? <AddressDialog open={open} setOpen={setOpen} /> : null}
     </div>
   );
 }

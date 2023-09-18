@@ -1,7 +1,7 @@
-import Profile from "@components/Profile/Profile";
+import Dashboard from "@components/UserProfile/Dashboard";
 
 function Page() {
-  return <Profile />;
+  return <Dashboard />;
 }
 
 export default Page;

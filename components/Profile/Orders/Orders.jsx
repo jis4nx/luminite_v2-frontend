@@ -9,9 +9,6 @@ function Orders() {
   return ordersData && (
     <div className="flex justify-center items-center">
       <div className="w-full min-w-max flex flex-col">
-        <div className="mx-auto mb-16">
-          <p className="text-indigo-700 font-medium text-lg">ORDER HISTORY</p>
-        </div>
         <OrderDetail ordersData={ordersData} />
       </div>
     </div>

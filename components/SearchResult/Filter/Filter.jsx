@@ -99,7 +99,7 @@ function Filter({ products }) {
                 return (
                   <Checkbox
                     label={item}
-                    className="text-lg text-red-500"
+                    className="text-lg"
                     key={item}
                     color="indigo"
                     value={item}

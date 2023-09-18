@@ -48,7 +48,7 @@ export default function NavBar() {
   return (
     <>
       <CartDrawer openDrawer={isCartOpen} closeDrawer={closeDrawer} />
-      <nav className="w-screen px-3 py-2">
+      <nav className="w-screen px-3 py-1 shadow-md my-3">
         <div className="flex justify-between text-black items-center">
           <div className="flex justify-evenly items-center ml-10">
             <Link href="/shop">

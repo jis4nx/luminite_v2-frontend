@@ -88,7 +88,16 @@ export const getRefresh = () => async (dispatch) => {
   }
 };
 
-export const getAddress = async () => {
+export const listAddress = async () => {
   const res = await accountApi.get("/address");
+  return res.data;
+};
+
+export const updateAddress = async (data) => {
+  const res = await accountApi.put(`getaddress/${data.id}`, data);
+  return res.data;
+};
+export const createAddress = async (data) => {
+  const res = await accountApi.post("/address", data);
   return res.data;
 };

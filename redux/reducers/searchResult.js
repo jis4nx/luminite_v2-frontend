@@ -8,7 +8,7 @@ function isObjectUnique(obj, index, self) {
 const searchResultSlice = createSlice({
   name: "searchResult",
   initialState: {
-    products: [],
+    products: null,
     filteredResults: [],
     attributes: { price: { min: 50, max: 30000 }, sizes: [], colors: [] },
     product_attrs: [],
@@ -16,12 +16,13 @@ const searchResultSlice = createSlice({
   reducers: {
     setSearchResult: (state, action) => {
       state.products = action.payload.products;
-      state.filteredResults = state.products.flatMap((product) =>
-        product.items.map((item) => item)
-      );
-
-      const sizes = new Set();
-      const colors = new Set();
+      if (state.products.length) {
+        state.filteredResults = state.products.flatMap((product) =>
+          product.items.map((item) => item)
+        );
+      } else {
+        state.filteredResults = [];
+      }
       const product_attributes = [];
 
       state.products.forEach((product) => {
@@ -29,12 +30,8 @@ const searchResultSlice = createSlice({
           if (Object.keys(item.attributes).length > 0) {
             product_attributes.push(item.attributes);
           }
-          sizes.add(item.product_size);
-          colors.add(item.product_color);
         });
       });
-      state.attributes.sizes = [];
-      state.attributes.colors = [...colors];
       const uniqueObjects = product_attributes.filter(isObjectUnique);
       const new_res = uniqueObjects.reduce((result, item) => {
         for (const key in item) {

@@ -13,6 +13,7 @@ function Page({ params }) {
     ["filterCategory", categoryId],
     () => searchProduct("category", categoryId),
     {
+      retry: false,
       enabled: !!categoryId,
     },
   );
@@ -21,7 +22,7 @@ function Page({ params }) {
     if (searchData) {
       dispatch(setSearchResult({ products: searchData }));
     }
-  }, [searchData,dispatch]);
+  }, [searchData]);
 
   return (
     <div>

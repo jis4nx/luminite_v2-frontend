@@ -5,11 +5,16 @@ import Image from "next/image";
 import BASE_URL from "@app/data";
 import EmptyProductList from "@components/NotFound/EmptyProductList";
 import Filter from "./Filter/Filter";
+import { useEffect } from "react";
 
 function SearchResult() {
   const { products, filteredResults } = useSelector((state) =>
     state.searchResult
   );
+
+  useEffect(() => {
+	console.log(products)
+  });
 
   return filteredResults && (
     <div className="flex gap-3">

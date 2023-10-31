@@ -7,23 +7,30 @@ import { Checkbox, Input } from "@material-tailwind/react";
 import { useMutation } from "@tanstack/react-query";
 import { filterProduct } from "@app/api/productapi/productapi";
 
-function Filter({ products }) {
+function Filter() {
   const [userInp, setUserInp] = useState({ min: 50, max: 30000 });
   const [userValue, setUserValue] = useState({});
   const dispatch = useDispatch();
-  const { product_attrs } = useSelector((state) => state.searchResult);
+  const { product_attrs} = useSelector((state) =>
+    state.searchResult
+  );
 
   const filterProducts = useMutation(filterProduct);
 
-  useEffect(() => {
-    let data = { price: { ...userInp }, attributes: { ...userValue } };
-    filterProducts.mutate(data, {
-      onSuccess: (res) => {
-        dispatch(setFilterItems({ items: res }));
-      },
-    });
-  }, [userValue, userInp]);
+  const prevValues = useRef({ userInp, userValue });
 
+  useEffect(() => {
+    if (prevValues.current.userInp !== userInp || prevValues.current.userValue !== userValue) {
+      let data = { price: { ...userInp }, attributes: { ...userValue } };
+      filterProducts.mutate(data, {
+        onSuccess: (res) => {
+          dispatch(setFilterItems({ items: res }));
+        },
+      });
+
+      prevValues.current = { userInp, userValue };
+    }
+  }, [userInp, userValue]);
   const handleAttrValue = (key, value, e) => {
     const updatedUserValue = { ...userValue };
     if (!e) {

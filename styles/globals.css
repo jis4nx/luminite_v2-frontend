@@ -123,7 +123,7 @@ td {
 }
 
 .checkboxColor input:checked ~ .mark {
-  @apply scale-125 border-2 border-gray-200
+  @apply scale-125 border-2 border-gray-200;
 }
 
 .mark:after {
@@ -141,3 +141,26 @@ td {
   border-width: 0 3px 3px 0;
   transform: rotate(45deg);
 }
+
+.category-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.category-item {
+  margin-bottom: 10px;
+}
+
+
+.subcategory-dropdown {
+  list-style-type: none;
+  left: 10%;
+  display: none;
+}
+
+.category:hover .subcategory-dropdown {
+  display: block;
+}
+
+
+

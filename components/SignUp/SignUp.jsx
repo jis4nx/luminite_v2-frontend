@@ -7,6 +7,7 @@ import {
   Card,
   CardBody,
   CardFooter,
+  Checkbox,
   Input,
   Typography,
 } from "@material-tailwind/react";
@@ -18,9 +19,16 @@ import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 function SignUp() {
   const [mounted, setMounted] = useState();
   const [registered, setRegistered] = useState(false);
+  const [type, setType] = useState("CUSTOMER");
   React.useEffect(() => setMounted(true), []);
+  React.useEffect(() => {
+    console.log(type);
+  }, [type]);
 
   const signUpUser = useMutation(registerUser);
+  const typeUpdate = (checked) => {
+    checked ? setType("SELLER") : setType("CUSTOMER");
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -29,7 +37,7 @@ function SignUp() {
       password2: "",
     },
     onSubmit: (values) => {
-      let data = { ...values, type: "CUSTOMER" };
+      let data = { ...values, type: type };
       signUpUser.mutate(data, {
         onSuccess: () => {
           setRegistered(true);
@@ -54,7 +62,7 @@ function SignUp() {
         <form onSubmit={formik.handleSubmit} className="mt-10">
           <Card className="w-96 mx-auto py-3">
             <Typography variant="h5" color="indigo" className="mx-auto">
-              Sign Up
+              {`${type[0] + type.slice(1).toLowerCase()} Sign Up`}
             </Typography>
             <CardBody className="flex flex-col gap-4">
               <Input
@@ -87,6 +95,11 @@ function SignUp() {
               <Button variant="gradient" fullWidth type="submit" color="indigo">
                 Sign Up
               </Button>
+              <Checkbox
+                color="indigo"
+                label={`Register as Seller`}
+                onChange={(e) => typeUpdate(e.target.checked)}
+              />
               <Typography variant="small" className="mt-6 flex justify-center">
                 <p className="text-gray-700 font-medium">
                   Already have an account?

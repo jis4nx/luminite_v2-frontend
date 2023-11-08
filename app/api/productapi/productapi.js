@@ -46,3 +46,7 @@ export const filterProduct = async (data) => {
   return res.data;
 };
 
+export const listMerchantOrders = async (offset) => {
+  const res = await productAPI.get(`list-orders`);
+  return res.data;
+};

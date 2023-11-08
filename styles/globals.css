@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -151,7 +155,6 @@ td {
   margin-bottom: 10px;
 }
 
-
 .subcategory-dropdown {
   list-style-type: none;
   left: 10%;
@@ -162,5 +165,25 @@ td {
   display: block;
 }
 
+.pagination-container {
+  display: flex;
+  margin-top: 1rem;
+  margin: 0 20px;
+}
 
+.page-item {
+  padding: 0px 10px;
+  color: #1c4c96;
+}
 
+.page-item + .page-item {
+  padding-left: 30px;
+}
+.page-item:hover {
+  background-color: rgb(228 228 231);
+}
+
+.item-active {
+  color: white;
+  background-color: #1c4c96;
+}

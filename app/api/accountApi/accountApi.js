@@ -101,3 +101,8 @@ export const createAddress = async (data) => {
   const res = await accountApi.post("/address", data);
   return res.data;
 };
+
+export const checkType = async () => {
+  const res = await accountApi.get("/checktype");
+  return res.data;
+};

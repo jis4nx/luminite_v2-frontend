@@ -7,6 +7,7 @@ const Layout = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={true} />
       {children}
     </QueryClientProvider>
   );

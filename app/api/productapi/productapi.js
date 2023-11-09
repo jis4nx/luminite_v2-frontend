@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const productAPI = axios.create({
+export const productAPI = axios.create({
   baseURL: "http://127.0.0.1:8000/shop/",
   withCredentials: true,
 });
@@ -15,7 +15,7 @@ export const addProduct = async (product) => {
 };
 
 export const addProductItem = async (item) => {
-  return await productAPI.post("/products/", item);
+  return await productAPI.post("item/", item);
 };
 
 export const getProducts = async () => {

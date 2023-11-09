@@ -43,7 +43,7 @@ input::-webkit-inner-spin-button {
 }
 
 .product-input {
-  @apply border-b-2 border-site-primary focus:outline-none text-indigo-600 font-medium;
+  @apply border-b-2 border-site-blue focus:outline-none text-indigo-600 font-medium;
 }
 
 .attribute-filter {
@@ -186,4 +186,9 @@ td {
 .item-active {
   color: white;
   background-color: #1c4c96;
+}
+
+.vertical-line {
+  border: 1px solid #1c4c96;
+  height: calc(100vh-5rem);
 }

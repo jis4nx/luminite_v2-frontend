@@ -1,19 +1,12 @@
 "use client";
 import React from "react";
-import {
-  Alert,
-  Button,
-  Card,
-  Input,
-  Textarea,
-  Typography,
-} from "@material-tailwind/react";
+import { Alert, Button, Card, Input, Textarea } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faImage } from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import Select from "react-select";
 import { useFormik } from "formik";
 import { addProduct, getCategories } from "@app/api/productapi/productapi";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 function ProductForm() {
   const [open, setOpen] = React.useState(false);
@@ -23,6 +16,7 @@ function ProductForm() {
   });
 
   const addProductData = useMutation(addProduct);
+  const queryClient = useQueryClient();
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -38,6 +32,7 @@ function ProductForm() {
       addProductData.mutate(formData, {
         onSuccess: () => {
           setOpen(true);
+          queryClient.invalidateQueries({ queryKey: ["merchantProductList"] });
         },
       });
     },
@@ -45,7 +40,7 @@ function ProductForm() {
   //
   return (
     <>
-      <section className="mt-5 max-w-lg m-auto">
+      <section>
         <Alert
           className="mb-1 bg-indigo-600"
           open={open}
@@ -60,16 +55,11 @@ function ProductForm() {
         >
           Product Added
         </Alert>
-        <Card className=" shadow-xl p-8">
-          <Typography
-            color="indigo"
-            align="center"
-            variant="h4"
-            className="mb-5"
-          >
-            Product Add
-          </Typography>
-          <form onSubmit={formik.handleSubmit}>
+        <Card className="" shadow={false}>
+          <h4 className="text-indigo-600 font-bold text-center mt-2">
+            Add Product Item
+          </h4>
+          <form onSubmit={formik.handleSubmit} className="mt-2">
             <div className="space-y-4">
               <Input
                 label="Product Name"
@@ -102,41 +92,20 @@ function ProductForm() {
                   value: cat.id,
                   label: cat.name,
                 }))}
+                placeholder="Select Categorry"
                 onChange={(option) => formik.setFieldValue("category", option)}
                 onBlur={formik.handleBlur("category")}
               />
-
-              <div className="inline-block border-2 border-indigo-800
-              text-indigo-800
-              rounded-lg p-1 px-2 hover:bg-indigo-800 hover:text-white hover:transition duration-300">
-                <input
-                  type="file"
-                  id="upload"
-                  hidden
-                  accept="images/*"
-                  onChange={(e) =>
-                    formik.setFieldValue("product_image", e.target.files[0])}
-                  required
-                />
-                <label
-                  htmlFor="upload"
-                  className="space-x-1 cursor-pointer"
-                >
-                  <FontAwesomeIcon
-                    icon={faImage}
-                    size="lg"
-                    className=""
-                  />
-                  <span className="text-sm font-medium">
-                  </span>
-                  {formik.values.product_image
-                    ? formik.values.product_image.name
-                    : "Choose File"}
-                </label>
-              </div>
             </div>
             <div className="flex items-center mt-4">
-              <Button size="sm" className="mx-auto" type="submit" color="indigo">Add</Button>
+              <Button
+                size="sm"
+                className="mx-auto"
+                type="submit"
+                color="indigo"
+              >
+                Add
+              </Button>
             </div>
           </form>
         </Card>

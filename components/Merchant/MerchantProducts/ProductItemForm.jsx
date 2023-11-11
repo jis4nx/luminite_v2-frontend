@@ -11,6 +11,7 @@ import {
 } from "@app/api/productapi/merchant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faImage } from "@fortawesome/free-solid-svg-icons";
+import { getMerchantProductList } from "@hooks/merchantProducts";
 
 const ProductItemForm = () => {
   const selectStyles = {
@@ -35,10 +36,7 @@ const ProductItemForm = () => {
   const [productAttributes, setProductAttributes] = useState({});
   const [isVisible, setIsVisible] = useState();
   const [product_type, setProductType] = useState();
-  const { data: listProducts } = useQuery({
-    queryKey: ["merchantProductList"],
-    queryFn: getMerchantProducts,
-  });
+  const { data: listProducts } = getMerchantProductList();
   const { data: productTypes } = useQuery({
     queryKey: ["listProductTypes"],
     queryFn: getProductTypes,

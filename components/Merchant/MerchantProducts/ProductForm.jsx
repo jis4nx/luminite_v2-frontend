@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Button, Card, Input, Textarea } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
@@ -7,8 +7,9 @@ import Select from "react-select";
 import { useFormik } from "formik";
 import { addProduct, getCategories } from "@app/api/productapi/productapi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { changeProduct } from "@app/api/productapi/merchant";
 
-function ProductForm() {
+function ProductForm({ productData, create }) {
   const [open, setOpen] = React.useState(false);
   const category = useQuery({
     queryKey: ["categories"],
@@ -16,12 +17,18 @@ function ProductForm() {
   });
 
   const addProductData = useMutation(addProduct);
+  const changeProductData = useMutation(changeProduct);
   const queryClient = useQueryClient();
-  const formik = useFormik({
-    initialValues: {
+  let initProductData = create
+    ? {
       name: "",
       desc: "",
       base_price: null,
+    }
+    : { ...productData, category: productData.category.id };
+  const formik = useFormik({
+    initialValues: {
+      ...initProductData,
     },
     onSubmit: (values) => {
       const formData = new FormData();
@@ -29,12 +36,25 @@ function ProductForm() {
       for (let x in data) {
         formData.append(x, data[x]);
       }
-      addProductData.mutate(formData, {
-        onSuccess: () => {
-          setOpen(true);
-          queryClient.invalidateQueries({ queryKey: ["merchantProductList"] });
-        },
-      });
+      if (create) {
+        addProductData.mutate(formData, {
+          onSuccess: () => {
+            setOpen(true);
+            queryClient.invalidateQueries({
+              queryKey: ["merchantProductList"],
+            });
+          },
+        });
+      } else {
+        changeProductData.mutate(values, {
+          onSuccess: () => {
+            setOpen(true);
+            queryClient.invalidateQueries({
+              queryKey: ["merchantProductList"],
+            });
+          },
+        });
+      }
     },
   });
   //
@@ -53,11 +73,11 @@ function ProductForm() {
             unmount: { y: 100 },
           }}
         >
-          Product Added
+          Product {create ? "Added" : "Saved"}
         </Alert>
         <Card className="" shadow={false}>
           <h4 className="text-indigo-600 font-bold text-center mt-2">
-            Add Product Item
+            {create ? "Add" : "Save"} Product
           </h4>
           <form onSubmit={formik.handleSubmit} className="mt-2">
             <div className="space-y-4">
@@ -65,14 +85,14 @@ function ProductForm() {
                 label="Product Name"
                 color="indigo"
                 name="name"
-                value={formik.values.productName}
+                value={formik.values.name}
                 onChange={formik.handleChange}
               />
               <Textarea
                 label="Product description"
                 color="indigo"
                 name="desc"
-                value={formik.values.productDesc}
+                value={formik.values.desc}
                 onChange={formik.handleChange}
               />
               <Input
@@ -92,7 +112,10 @@ function ProductForm() {
                   value: cat.id,
                   label: cat.name,
                 }))}
-                placeholder="Select Categorry"
+                defaultValue={productData.category.id}
+                placeholder={create
+                  ? "Select Category"
+                  : productData.category.name}
                 onChange={(option) => formik.setFieldValue("category", option)}
                 onBlur={formik.handleBlur("category")}
               />
@@ -104,7 +127,7 @@ function ProductForm() {
                 type="submit"
                 color="indigo"
               >
-                Add
+                {create ? "Add" : "Save"}
               </Button>
             </div>
           </form>

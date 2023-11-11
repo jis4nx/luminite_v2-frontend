@@ -4,6 +4,7 @@ import SideBar from "./MarchantSidebar";
 import { useState } from "react";
 import MerchantOrder from "../MerchantOrders/MerchantOrder";
 import MainProductForm from "../MerchantProducts/MainProductForm";
+import ListProductItems from "../MerchantProducts/ListProductItems";
 
 function MerchantDashboard() {
   const [mode, setMode] = useState("Profile");
@@ -15,6 +16,9 @@ function MerchantDashboard() {
       break;
     case "Add Product Item":
       div = <MainProductForm />;
+      break;
+    case "Product Items":
+      div = <ListProductItems />;
       break;
   }
   return (

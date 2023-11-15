@@ -64,13 +64,13 @@ const ProductItemForm = () => {
     initialValues: {
       product: "",
       price: "",
-      qty: "",
+      qty_in_stock: "",
     },
     onSubmit: (values) => {
       const data = {
         ...values,
         attributes: { ...productAttributes },
-        product: values.product.value,
+        product_id: values.product.value,
         product_type: product_type,
       };
       addProductItemData.mutate(data, { onSuccess: () => setIsVisible(true) });
@@ -166,7 +166,7 @@ const ProductItemForm = () => {
               type="number"
               placeholder="Qty"
               min={0}
-              name="qty"
+              name="qty_in_stock"
               className="product-input border-site-blue"
               onChange={formik.handleChange}
             />

@@ -23,3 +23,10 @@ export const changeProduct = async (data) => {
   const res = await productAPI.put(`merchant-products/${data.id}`, data);
   return res.data;
 };
+
+export const listProductItems = async (id, params = {}) => {
+  const res = await productAPI.get(`merchant-product-items/${id}`, {
+    params: { ...params },
+  });
+  return res.data;
+};

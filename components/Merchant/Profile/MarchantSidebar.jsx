@@ -26,7 +26,7 @@ const options = [
     icon: PlusIcon,
   },
   {
-    label: "Product Items",
+    label: "Products",
     icon: InboxIcon,
   },
 

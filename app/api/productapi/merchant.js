@@ -30,3 +30,8 @@ export const listProductItems = async (id, params = {}) => {
   });
   return res.data;
 };
+
+export const changeProductItem = async (data) => {
+  const res = await productAPI.put(`merchant-product-item/${data.id}`, data);
+  return res.data;
+};

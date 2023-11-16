@@ -2,7 +2,7 @@ import { Checkbox } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { listProductItems } from "@app/api/productapi/merchant";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setFilterItems } from "@redux/reducers/searchResult";
 import ReactSlider from "react-slider";
 import { Input } from "@material-tailwind/react";
@@ -12,6 +12,7 @@ function ProductItemFilter({ attributes, id }) {
   const [queryAttr, setQueryAttr] = useState({});
   const [qtyRange, setQtyRange] = useState(0);
   const dispatch = useDispatch();
+
   const { data: filteredData } = useQuery({
     queryKey: ["merchantProductItems", id, queryAttr],
     queryFn: () => listProductItems(id, queryAttr),
@@ -23,6 +24,7 @@ function ProductItemFilter({ attributes, id }) {
       console.log(filteredData);
     }
   }, [filteredData]);
+
   const handleAttrValue = (k, v, checked) => {
     let queryData = { ...queryAttr };
     if (checked) {
@@ -49,6 +51,7 @@ function ProductItemFilter({ attributes, id }) {
 
     setQueryAttr(queryData);
   };
+
   return (
     <div className="flex flex-col gap-3">
       <section className="space-y-5  bg-white shadow-sm p-3">

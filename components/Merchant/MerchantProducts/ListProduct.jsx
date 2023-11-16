@@ -115,7 +115,7 @@ export default function ListProducts() {
                     </td>
                     <td className={`${classes} bg-blue-gray-50/50`}>
                       <Link
-                        href={`/merchant/items/${id}`}
+                        href={`/merchant/products/${id}`}
                         className="font-medium"
                       >
                         {total_items}

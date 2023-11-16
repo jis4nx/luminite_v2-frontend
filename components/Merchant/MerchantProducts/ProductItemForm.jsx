@@ -6,14 +6,16 @@ import { useFormik } from "formik";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { addProductItem } from "@app/api/productapi/productapi";
 import {
-  getMerchantProducts,
+  changeProductItem,
   getProductTypes,
 } from "@app/api/productapi/merchant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faImage } from "@fortawesome/free-solid-svg-icons";
 import { getMerchantProductList } from "@hooks/merchantProducts";
+import { useSelector } from "react-redux";
+import product from "@redux/reducers/product";
 
-const ProductItemForm = () => {
+const ProductItemForm = ({ create }) => {
   const selectStyles = {
     control: (base) => ({
       ...base,
@@ -36,18 +38,27 @@ const ProductItemForm = () => {
   const [productAttributes, setProductAttributes] = useState({});
   const [isVisible, setIsVisible] = useState();
   const [product_type, setProductType] = useState();
+  const [product, setProduct] = useState();
+
+  const { productItem } = useSelector((state) => state.product);
   const { data: listProducts } = getMerchantProductList();
   const { data: productTypes } = useQuery({
     queryKey: ["listProductTypes"],
     queryFn: getProductTypes,
   });
   const addProductItemData = useMutation(addProductItem);
+  const changeProductItemData = useMutation(changeProductItem);
 
   const handleProductTypeChange = (selectedOption) => {
     setAttributes(selectedOption.value);
     setProductType(selectedOption.label);
   };
-
+  const handleProductChange = (selectedOption) => {
+    setProduct(selectedOption.value);
+  };
+  useEffect(() => {
+    setProduct(productItem.product);
+  }, [productItem]);
   useEffect(() => {
     let timeoutId;
     if (isVisible) {
@@ -60,22 +71,49 @@ const ProductItemForm = () => {
       clearTimeout(timeoutId);
     };
   }, [isVisible]);
-  const formik = useFormik({
-    initialValues: {
-      product: "",
+
+  const initValue = create
+    ? {
+      product_id: "",
       price: "",
       qty_in_stock: "",
+    }
+    : {
+      product_id: product,
+      price: productItem.price,
+      qty_in_stock: productItem.stockQty,
+      product_type: productItem.product_type,
+    };
+
+  const formik = useFormik({
+    initialValues: {
+      ...initValue,
     },
     onSubmit: (values) => {
-      const data = {
+      let data = {
         ...values,
         attributes: { ...productAttributes },
-        product_id: values.product.value,
+        product_id: product,
         product_type: product_type,
       };
-      addProductItemData.mutate(data, { onSuccess: () => setIsVisible(true) });
+      data = {
+        ...data,
+        id: productItem.id,
+        product_type: values.product_type,
+      };
+      console.log(data);
+      if (create) {
+        addProductItemData.mutate(data, {
+          onSuccess: () => setIsVisible(true),
+        });
+      } else {
+        changeProductItemData.mutate(data, {
+          onSuccess: () => setIsVisible(true),
+        });
+      }
     },
   });
+
   const handleInputChange = (attr, event) => {
     const updatedAttributes = {
       ...productAttributes,
@@ -87,6 +125,7 @@ const ProductItemForm = () => {
     setProductAttributes(updatedAttributes);
     formik.handleChange(event);
   };
+
   return listProducts && productTypes && (
     <>
       <div className="max-w-xl m-auto">
@@ -108,7 +147,7 @@ const ProductItemForm = () => {
                 className="rounded-none border-l-4 border-[#2ec946] bg-[#2ec946]/10 font-medium text-[#2ec946]"
                 color="indigo"
               >
-                Product Item Added!
+                {create ? "Product Item Added!" : "Product Item Saved!"}
               </Alert>
             )
             : null}
@@ -125,10 +164,11 @@ const ProductItemForm = () => {
                 }))}
                 isSearchable
                 noOptionsMessage={() => "No products found!"}
-                defaultValue=""
+                defaultValue={create ? product.id : productItem.product}
                 styles={selectStyles}
-                placeholder="Select Product"
-                onChange={(e) => formik.setFieldValue("product", e)}
+                value={product}
+                placeholder={create ? "Select Product" : productItem.name}
+                onChange={handleProductChange}
               />
               <Select
                 options={productTypes.map((type) => ({
@@ -137,9 +177,11 @@ const ProductItemForm = () => {
                 }))}
                 isSearchable
                 noOptionsMessage={() => "No Product Type Found!"}
-                defaultValue=""
+                defaultValue={create
+                  ? type.product_type
+                  : productItem.product_type}
                 styles={selectStyles}
-                placeholder="Product Type"
+                placeholder={create ? "Product Type" : productItem.product_type}
                 onChange={handleProductTypeChange}
               />
               <div className="space-y-4">
@@ -167,6 +209,7 @@ const ProductItemForm = () => {
               placeholder="Qty"
               min={0}
               name="qty_in_stock"
+              value={formik.values.qty_in_stock}
               className="product-input border-site-blue"
               onChange={formik.handleChange}
             />
@@ -174,6 +217,7 @@ const ProductItemForm = () => {
               type="number"
               name="price"
               placeholder="Price"
+              value={formik.values.price}
               min={0}
               className="focus:outline-none border-site-blue            text-indigo-600 appearance-none
             border-b-2 font-medium"
@@ -219,7 +263,7 @@ const ProductItemForm = () => {
               size="sm"
               className="bg-site-blue text-white border-transparent"
             >
-              Create Item
+              {create ? "Create Item" : "Save Item"}
             </Button>
           </div>
         </form>

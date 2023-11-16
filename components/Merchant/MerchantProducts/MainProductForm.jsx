@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import ProductForm from "./ProductForm";
 import ProductItemForm from "./ProductItemForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,7 +9,7 @@ function MainProductForm() {
   return (
     <section className="flex p-3 gap-3">
       <div className={isProdctForm ? "basis-2/3" : "basis-2/3"}>
-        <ProductItemForm />
+        <ProductItemForm create={true} />
       </div>
       <div className="vertical-line"></div>
       {isProdctForm

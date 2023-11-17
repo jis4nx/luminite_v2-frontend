@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
   product: { id: "", name: "", desc: "", category: "" },
-  item: { id: "", size: "", color: "", image: "", price: 0, product: "" },
   itemList: [],
   productItem: {
     id: "",
@@ -13,6 +12,7 @@ const initState = {
     price: 0,
     product_type: "",
   },
+  attributeList: {},
 };
 
 const productSlice = createSlice({
@@ -45,16 +45,33 @@ const productSlice = createSlice({
         name,
       };
     },
-    setItem(state, action) {
-      const { id, size, color, image, price, stockQty } = action.payload;
-      state.item = { id, size, color, image, price, stockQty };
-    },
     setItemList(state, action) {
       state.itemList = action.payload;
+    },
+    setAttributeList(state, action) {
+      state.attributeList = action.payload;
+    },
+    filterItem(state, action) {
+      // const { color, attr } = action.payload;
+      // const filteredItems = state.itemList.filter((item) => {
+      //   const hasMatchingColor = item.product_color === color;
+      //
+      //   const hasMatchingAttributes = Object.keys(attr).every((key) =>
+      //     item.attributes[key] == attr[key]
+      //   );
+      //
+      //   return hasMatchingColor && hasMatchingAttributes;
+      // });
+      // state.productItem = filteredItems[0];
     },
   },
 });
 
-export const { setProduct, setItem, setItemList, setProductItem } =
-  productSlice.actions;
+export const {
+  setProduct,
+  setItemList,
+  setProductItem,
+  setAttributeList,
+  filterItem,
+} = productSlice.actions;
 export default productSlice.reducer;

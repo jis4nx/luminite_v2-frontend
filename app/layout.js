@@ -1,4 +1,3 @@
-
 import "@styles/globals.css";
 import "./data.js";
 import ReactQueryProvider from "@components/ReactQueryProvider.jsx";
@@ -6,6 +5,7 @@ import NavBar from "@components/Navbar/Navbar.jsx";
 import Providers from "@components/Providers.jsx";
 import CheckAuth from "@components/CheckAuth/CheckAuth.jsx";
 import CartLoad from "@components/CartLoad/CartLoad.jsx";
+import Footer from "@components/Footer/Footer.jsx";
 function RootLayout({ children }) {
   return (
     <Providers>
@@ -19,6 +19,7 @@ function RootLayout({ children }) {
               {children}
             </ReactQueryProvider>
           </main>
+          <Footer />
         </body>
       </html>
     </Providers>

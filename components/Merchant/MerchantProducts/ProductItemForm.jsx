@@ -13,7 +13,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faImage } from "@fortawesome/free-solid-svg-icons";
 import { getMerchantProductList } from "@hooks/merchantProducts";
 import { useSelector } from "react-redux";
-import product from "@redux/reducers/product";
 
 const ProductItemForm = ({ create }) => {
   const selectStyles = {
@@ -74,12 +73,10 @@ const ProductItemForm = ({ create }) => {
 
   const initValue = create
     ? {
-      product_id: "",
       price: "",
       qty_in_stock: "",
     }
     : {
-      product_id: product,
       price: productItem.price,
       qty_in_stock: productItem.stockQty,
       product_type: productItem.product_type,
@@ -90,20 +87,23 @@ const ProductItemForm = ({ create }) => {
       ...initValue,
     },
     onSubmit: (values) => {
+      let form_data = new FormData();
       let data = {
         ...values,
-        attributes: { ...productAttributes },
         product_id: product,
         product_type: product_type,
       };
       data = {
         ...data,
         id: productItem.id,
-        product_type: values.product_type,
       };
-      console.log(data);
+      for (let item in data) {
+        form_data.append(item, data[item]);
+      }
+      form_data.append("attributes", JSON.stringify(productAttributes));
+      console.log(form_data);
       if (create) {
-        addProductItemData.mutate(data, {
+        addProductItemData.mutate(form_data, {
           onSuccess: () => setIsVisible(true),
         });
       } else {
@@ -129,7 +129,7 @@ const ProductItemForm = ({ create }) => {
   return listProducts && productTypes && (
     <>
       <div className="max-w-xl m-auto">
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} encType="multipart/form-data">
           {isVisible
             ? (
               <Alert
@@ -164,9 +164,8 @@ const ProductItemForm = ({ create }) => {
                 }))}
                 isSearchable
                 noOptionsMessage={() => "No products found!"}
-                defaultValue={create ? product.id : productItem.product}
+                defaultValue={create ? product?.id : productItem.product}
                 styles={selectStyles}
-                value={product}
                 placeholder={create ? "Select Product" : productItem.name}
                 onChange={handleProductChange}
               />
@@ -177,9 +176,7 @@ const ProductItemForm = ({ create }) => {
                 }))}
                 isSearchable
                 noOptionsMessage={() => "No Product Type Found!"}
-                defaultValue={create
-                  ? type.product_type
-                  : productItem.product_type}
+                defaultValue={create ?? productItem.product_type}
                 styles={selectStyles}
                 placeholder={create ? "Product Type" : productItem.product_type}
                 onChange={handleProductTypeChange}

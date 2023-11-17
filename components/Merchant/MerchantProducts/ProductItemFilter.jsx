@@ -21,7 +21,6 @@ function ProductItemFilter({ attributes, id }) {
   useEffect(() => {
     if (filteredData) {
       dispatch(setFilterItems({ items: filteredData.items }));
-      console.log(filteredData);
     }
   }, [filteredData]);
 

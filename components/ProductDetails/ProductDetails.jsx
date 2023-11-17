@@ -15,14 +15,21 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { addToCart } from "@redux/reducers/cart";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { setItem, setItemList, setProduct } from "@redux/reducers/product";
+import {
+  setAttributeList,
+  setItemList,
+  setProduct,
+  setProductItem,
+} from "@redux/reducers/product";
 import { useRouter } from "next/navigation";
 import { setProducts } from "@redux/reducers/checkout";
 import AttributeFilter from "./AttributeFilter";
 
 function ProductDetails({ id }) {
   const router = useRouter();
-  const { product, itemList, item } = useSelector((state) => state.product);
+  const { product, itemList, productItem: item } = useSelector((state) =>
+    state.product
+  );
   const dispatch = useDispatch();
   const [qty, setQty] = useState(1);
   const [mount, setMount] = useState(false);
@@ -63,16 +70,18 @@ function ProductDetails({ id }) {
           category: productData.product.category,
         }),
       );
+      dispatch(setAttributeList(productData.attributes));
       dispatch(setItemList(productData.items));
       dispatch(
-        setItem({
+        setProductItem({
           id: productData.item.id,
-          title: product.name,
-          size: productData.item.product_size,
+          name: product.name,
           color: productData.item.product_color,
           image: productData.item.image,
           price: productData.item.price,
           stockQty: productData.item.qty_in_stock,
+          product_type: productData.product_type,
+          attributes: productData.item.attributes,
         }),
       );
     }
@@ -82,9 +91,9 @@ function ProductDetails({ id }) {
     productData &&
     mount && (
       <div>
-        <section className="px-5 mx-auto">
+        <section className="">
           <div className="">
-            <div className="lg:w-4/5 mx-auto flex flex-wrap mb-16 mt-8">
+            <div className="lg:w-3/4 flex flex-wrap mb-16 mt-8">
               <Breadcrumbs separator="-" color="indigo">
                 <Link
                   href="#"
@@ -119,7 +128,7 @@ function ProductDetails({ id }) {
                 </Link>
               </Breadcrumbs>
             </div>
-            <div className="lg:w-4/5 mx-auto flex flex-wrap">
+            <div className="lg:w-4/5  flex flex-wrap">
               <Image
                 alt={product.name}
                 className="object-contain object-center rounded-md"
@@ -127,29 +136,16 @@ function ProductDetails({ id }) {
                 width={400}
                 height={400}
               />
-              <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                <div className="space-y-4">
+              <div className="lg:w-1/2 w-full lg:pl-10 mt-6 lg:mt-0">
+                <div className="space-y-5">
                   <h2 className="text-sm title-font text-gray-500 tracking-widest">
                     BRAND NAME
                   </h2>
-                  <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+                  <h1 className="text-gray-800 text-3xl title-font font-medium mb-1">
                     {product.name}
                   </h1>
-                  <p className="leading-relaxed">{product.desc}</p>
                 </div>
-                <div
-                  className={`flex mt-6 items-center pb-5 border-b-2 border-gray-100 ${
-                    itemList.length && `mb-5`
-                  }`}
-                >
-                  {itemList.length && (
-                    <AttributeFilter
-                      items={itemList}
-                      selectedItem={item}
-                    />
-                  )}
-                </div>
-                <div className="flex items-center gap-10 text-gray-900">
+                <div className="flex items-center gap-10 text-gray-900 py-5">
                   <div className="flex items-center gap-2">
                     <p>QTY</p>
                     <input
@@ -210,6 +206,7 @@ function ProductDetails({ id }) {
                     Buy Now
                   </Button>
                 </div>
+
                 <div className="">
                   <p className="font-semibold text-indigo-700 m-0">Features</p>
                   <ul className="space-y-2 featured-lists text-gray-800">
@@ -219,12 +216,36 @@ function ProductDetails({ id }) {
                   </ul>
                 </div>
               </div>
+              <div>
+                {itemList.length && (
+                  <AttributeFilter
+                    items={itemList}
+                    selectedItem={item}
+                    attributes={item.attributes}
+                  />
+                )}
+              </div>
             </div>
-            <div className="">
-              <div className="w-4/6 space-y-1">
-                <p className="text-indigo-800 text-xl border-gray-500 border-b-2 py-1">
-                  Reviews
+            <div className="my-10">
+              <div className="border-dotted border-2 border-gray-400">
+                <p className="text-gray-700 text-xl inline-block ml-5 mt-2">
+                  Description
                 </p>
+                <div className="p-5">
+                  <p className="text-gray-900 text-lg">{product.desc}</p>
+                </div>
+              </div>
+              <div className="flex mt-10">
+                <div className="basis-[40%]">
+                  <p className="text-site-blue text-xl">
+                    Ratings
+                  </p>
+                </div>
+                <div className="">
+                  <p className="text-site-blue text-xl">
+                    Reviews
+                  </p>
+                </div>
               </div>
             </div>
           </div>

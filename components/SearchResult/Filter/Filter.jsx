@@ -10,18 +10,35 @@ import { filterProduct } from "@app/api/productapi/productapi";
 function Filter() {
   const [userInp, setUserInp] = useState({ min: 50, max: 30000 });
   const [userValue, setUserValue] = useState({});
+  const [color, setColor] = useState([]);
   const dispatch = useDispatch();
-  const { product_attrs} = useSelector((state) =>
+  const { product_attrs, attributes: { colors } } = useSelector((state) =>
     state.searchResult
   );
 
   const filterProducts = useMutation(filterProduct);
 
   const prevValues = useRef({ userInp, userValue });
+  const handleColorValue = (checked, value) => {
+    let colorList = [...color];
+    if (checked) {
+      colorList.push(value);
+    } else {
+      colorList = colorList.filter((color) => color !== value);
+    }
+    setColor(colorList);
+  };
 
   useEffect(() => {
-    if (prevValues.current.userInp !== userInp || prevValues.current.userValue !== userValue) {
-      let data = { price: { ...userInp }, attributes: { ...userValue } };
+    if (
+      prevValues.current.userInp !== userInp ||
+      prevValues.current.userValue !== userValue
+    ) {
+      let data = {
+        price: { ...userInp },
+        attributes: { ...userValue },
+        colors: color,
+      };
       filterProducts.mutate(data, {
         onSuccess: (res) => {
           dispatch(setFilterItems({ items: res }));
@@ -30,7 +47,7 @@ function Filter() {
 
       prevValues.current = { userInp, userValue };
     }
-  }, [userInp, userValue]);
+  }, [userInp, userValue, color]);
   const handleAttrValue = (key, value, e) => {
     const updatedUserValue = { ...userValue };
     if (!e) {
@@ -53,7 +70,7 @@ function Filter() {
   return product_attrs && (
     <div className="flex flex-col gap-3">
       <section className="space-y-5  bg-white shadow-sm p-3">
-        <div>
+        <div className="">
           <p className="p-3 text-gray-800 text-lg">Price Range</p>
           <ReactSlider
             className="horizontal-slider"
@@ -75,6 +92,7 @@ function Filter() {
               })}
           />
         </div>
+
         <div className="pt-10 flex justify-between">
           <Input
             type="number"
@@ -94,6 +112,21 @@ function Filter() {
               setUserInp({ ...userInp, max: e.target.value });
             }}
           />
+        </div>
+
+        <div>
+          <p className="p-3 text-gray-800 text-lg">Color Family</p>
+          {colors?.map((color, i) => (
+            <Checkbox
+              label={color}
+              className="text-lg"
+              key={i}
+              color="indigo"
+              value={color}
+              onChange={(e) =>
+                handleColorValue(e.target.checked, e.target.value)}
+            />
+          ))}
         </div>
       </section>
       {Object.entries(product_attrs).map((item) => {

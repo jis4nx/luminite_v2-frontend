@@ -10,7 +10,7 @@ const searchResultSlice = createSlice({
   initialState: {
     products: null,
     filteredResults: [],
-    attributes: { price: { min: 50, max: 30000 }, sizes: [], colors: [] },
+    attributes: { price: { min: 50, max: 30000 }, colors: [] },
     product_attrs: [],
   },
   reducers: {
@@ -25,8 +25,10 @@ const searchResultSlice = createSlice({
       }
       const product_attributes = [];
 
+      const colorList = [];
       state.products.forEach((product) => {
         product.items.forEach((item) => {
+          colorList.push(item.product_color);
           if (Object.keys(item.attributes).length > 0) {
             product_attributes.push(item.attributes);
           }
@@ -46,6 +48,7 @@ const searchResultSlice = createSlice({
         return result;
       }, {});
       state.product_attrs = new_res;
+      state.attributes.colors = colorList;
     },
     setFilterItems: (state, action) => {
       state.filteredResults = action.payload.items;

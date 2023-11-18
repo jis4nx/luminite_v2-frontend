@@ -1,7 +1,6 @@
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;
@@ -48,7 +47,15 @@ export default function SimpleSlider() {
   };
   return (
     <div className="h-[300px] w-[600px]">
-      <Slider {...settings}>
+      <Carousel
+        autoPlay={true}
+        showArrows={true}
+        infiniteLoop={true}
+        showStatus={false}
+        swipeable={true}
+        emulateTouch={true}
+        showIndicators={false}
+      >
         <div className="rounded-xl max-h[400px]">
           <Image
             height={400}
@@ -74,7 +81,7 @@ export default function SimpleSlider() {
             alt="Carousel Pic"
           />
         </div>
-      </Slider>
+      </Carousel>
     </div>
   );
 }

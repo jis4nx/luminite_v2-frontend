@@ -24,13 +24,15 @@ function ProductReviews() {
                   src={`${BASE_URL}${review.user.image}`}
                 />
                 <div className="space-y-1">
-                  <p className="text-sm text-site-blue">{review.user.email}</p>
+                  <p className="text-site-blue text-xs">
+                    {review.user.name}
+                  </p>
                   <p className="text-sm text-gray-700">{review.body}</p>
                   <Rating value={review.rating} readonly />
                 </div>
               </div>
-              <p className="top-1 float-right text-site-blue text-xs italic">
-                {new Date(review.updated_at).toDateString()}
+              <p className="top-1 float-right  text-xs italic text-indigo-600">
+                -{" "}{new Date(review.updated_at).toDateString()}
               </p>
             </div>
           );

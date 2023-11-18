@@ -51,4 +51,7 @@ export const listMerchantOrders = async (offset) => {
   return res.data;
 };
 
-;
+export const createReview = async (data) => {
+  const res = await productAPI.post("reviews", data);
+  return res.data;
+};

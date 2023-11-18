@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getItembyId } from "@app/api/productapi/productapi";
 import Image from "next/image";
 import { Breadcrumbs, Input } from "@material-tailwind/react";
@@ -24,6 +24,8 @@ import {
 import { useRouter } from "next/navigation";
 import { setProducts } from "@redux/reducers/checkout";
 import AttributeFilter from "./AttributeFilter";
+import ProductReviews from "./ProductReviews";
+import UserReview from "./UserReview";
 
 function ProductDetails({ id }) {
   const router = useRouter();
@@ -34,13 +36,11 @@ function ProductDetails({ id }) {
   const [qty, setQty] = useState(1);
   const [mount, setMount] = useState(false);
   const [qtyError, setQtyError] = useState(false);
-  const { data: productData } = useQuery(
-    ["product", id],
-    () => getItembyId(id),
-    {
-      enabled: !!id,
-    },
-  );
+  const { data: productData } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () => getItembyId(id),
+    enabled: !!id,
+  });
 
   const handleBuy = () => {
     if (!(qty >= item.stockQty)) {
@@ -60,8 +60,7 @@ function ProductDetails({ id }) {
   };
 
   useEffect(() => {
-    setMount(true);
-    if (mount && productData?.product && productData?.items) {
+    if (!mount && productData?.product && productData?.items) {
       dispatch(
         setProduct({
           id: productData.product.id,
@@ -82,13 +81,20 @@ function ProductDetails({ id }) {
           stockQty: productData.item.qty_in_stock,
           product_type: productData.product_type,
           attributes: productData.item.attributes,
+          reviews: productData.item.reviews,
         }),
       );
     }
+
+    setMount(true);
   }, [mount, productData, dispatch]);
 
+  useEffect(() => {
+    console.log(item);
+    console.log(Boolean(item));
+  }, [item]);
   return (
-    productData &&
+    item &&
     mount && (
       <div>
         <section className="">
@@ -132,7 +138,7 @@ function ProductDetails({ id }) {
               <Image
                 alt={product.name}
                 className="object-contain object-center rounded-md"
-                src={item.image}
+                src={item.id ? item.image : "/no-item-found-here.png"}
                 width={400}
                 height={400}
               />
@@ -161,6 +167,7 @@ function ProductDetails({ id }) {
                     <Button
                       size="sm"
                       color="indigo"
+                      disabled={!item.id}
                       onClick={() =>
                         dispatch(
                           addToCart({
@@ -198,6 +205,7 @@ function ProductDetails({ id }) {
                     </span>
                   </div>
                   <Button
+                    disabled={!item.id}
                     color="indigo"
                     className="my-5"
                     size="sm"
@@ -235,16 +243,18 @@ function ProductDetails({ id }) {
                   <p className="text-gray-900 text-lg">{product.desc}</p>
                 </div>
               </div>
-              <div className="flex mt-10">
-                <div className="basis-[40%]">
-                  <p className="text-site-blue text-xl">
-                    Ratings
-                  </p>
+              <div className="flex mt-10 gap-5">
+                <div className="basis-[50%]">
+                  <p className="text-site-blue text-xl">Reviews</p>
+                  <div className="my-5">
+                    <ProductReviews />
+                  </div>
                 </div>
-                <div className="">
+                <div className="basis-[45%] space-y-2 bg-white shadow-md p-5 rounded-md">
                   <p className="text-site-blue text-xl">
-                    Reviews
+                    Write a review
                   </p>
+                  <UserReview />
                 </div>
               </div>
             </div>

@@ -48,10 +48,10 @@ export default function AttributeFilter({ items, selectedItem, attributes }) {
         )
         : true;
 
-      return hasMatchingColor || hasMatchingAttributes;
+      return hasMatchingColor && hasMatchingAttributes;
     });
-	const item = filteredItems[0]
-	dispatch(setProductItem({...item}))
+    const item = filteredItems[0];
+    dispatch(setProductItem({ ...item }));
     // dispatch(filterItem({ color: color, attr: queryAttr }));
     // const filterColor = items.reduce((result, item) => {
     //   if (!result.some((obj) => obj.product_color === item.product_color)) {

@@ -15,24 +15,21 @@ const searchResultSlice = createSlice({
   },
   reducers: {
     setSearchResult: (state, action) => {
-      state.products = action.payload.products;
-      if (state.products.length) {
-        state.filteredResults = state.products.flatMap((product) =>
-          product.items.map((item) => item)
-        );
+      let products = action.payload.products;
+      if (products.items.length) {
+        state.filteredResults = products.items;
       } else {
         state.filteredResults = [];
       }
+      state.products = products;
       const product_attributes = [];
 
       const colorList = [];
-      state.products.forEach((product) => {
-        product.items.forEach((item) => {
-          colorList.push(item.product_color);
-          if (Object.keys(item.attributes).length > 0) {
-            product_attributes.push(item.attributes);
-          }
-        });
+      state.products.items.forEach((item) => {
+        colorList.push(item.product_color);
+        if (Object.keys(item.attributes).length > 0) {
+          product_attributes.push(item.attributes);
+        }
       });
       const uniqueObjects = product_attributes.filter(isObjectUnique);
       const new_res = uniqueObjects.reduce((result, item) => {

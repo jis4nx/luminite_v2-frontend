@@ -9,30 +9,42 @@ import {
 } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import EmptyProductList from "@components/NotFound/EmptyProductList";
+import { useEffect, useState } from "react";
 
 export function SearchProduct({ items, handleClickProduct, query }) {
+  const [mount, setMount] = useState(false);
+  const [product, setProducts] = useState([]);
   const router = useRouter();
   const handleClick = (id) => {
     router.push(`/product/${id}`);
     handleClickProduct();
   };
-  return (
+  useEffect(() => {
+    if (items !== undefined) {
+      setMount(true);
+      setProducts(items.items);
+    }
+  }, [items]);
+  useEffect(() => {
+    console.log(product);
+  }, [product]);
+  return mount && (
     <Card className="mt-2 absolute w-[28%]">
-      {items && items.length && query
+      {product.length
         ? (
           <List>
-            {items.map((item) => {
+            {product.map((item) => {
               return (
                 <ListItem
-                  key={item.item.id}
+                  key={item.id}
                   onClick={() => {
-                    handleClick(item.item.id);
+                    handleClick(item.id);
                   }}
                 >
                   <ListItemPrefix>
                     <Image
                       alt={item.name}
-                      src={`${BASE_URL}${item.item.image}`}
+                      src={item.image}
                       width={50}
                       height={50}
                     />

@@ -12,9 +12,9 @@ function Filter() {
   const [userValue, setUserValue] = useState({});
   const [color, setColor] = useState([]);
   const dispatch = useDispatch();
-  const { product_attrs, attributes: { colors } } = useSelector((state) =>
-    state.searchResult
-  );
+  const { products, product_attrs, attributes: { colors } } = useSelector((
+    state,
+  ) => state.searchResult);
 
   const filterProducts = useMutation(filterProduct);
 
@@ -30,23 +30,24 @@ function Filter() {
   };
 
   useEffect(() => {
-    if (
-      prevValues.current.userInp !== userInp ||
-      prevValues.current.userValue !== userValue
-    ) {
-      let data = {
-        price: { ...userInp },
-        attributes: { ...userValue },
-        colors: color,
-      };
-      filterProducts.mutate(data, {
-        onSuccess: (res) => {
-          dispatch(setFilterItems({ items: res }));
-        },
-      });
+    // if (
+    //   prevValues.current.userInp !== userInp ||
+    //   prevValues.current.userValue !== userValue
+    // ) {
+    let data = {
+      list_id: products.list_id,
+      price: { ...userInp },
+      attributes: { ...userValue },
+      colors: color,
+    };
+    filterProducts.mutate(data, {
+      onSuccess: (res) => {
+        dispatch(setFilterItems({ items: res }));
+      },
+    });
 
-      prevValues.current = { userInp, userValue };
-    }
+    prevValues.current = { userInp, userValue };
+    // }
   }, [userInp, userValue, color]);
   const handleAttrValue = (key, value, e) => {
     const updatedUserValue = { ...userValue };

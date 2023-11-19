@@ -2,19 +2,13 @@
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import Image from "next/image";
-import BASE_URL from "@app/data";
 import EmptyProductList from "@components/NotFound/EmptyProductList";
 import Filter from "./Filter/Filter";
-import { useEffect } from "react";
 
 function SearchResult() {
   const { products, filteredResults } = useSelector((state) =>
     state.searchResult
   );
-
-  useEffect(() => {
-	console.log(products)
-  });
 
   return filteredResults && (
     <div className="flex gap-3">
@@ -31,7 +25,7 @@ function SearchResult() {
                     <div className="mx-auto flex flex-col justify-around gap-2">
                       <Image
                         className="object-contain max-h-[150px] max-w-[150px]"
-                        src={`${BASE_URL}${item.image}`}
+                        src={item.image}
                         height={150}
                         width={150}
                         alt=""

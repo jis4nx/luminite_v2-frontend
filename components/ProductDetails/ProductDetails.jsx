@@ -89,10 +89,6 @@ function ProductDetails({ id }) {
     setMount(true);
   }, [mount, productData, dispatch]);
 
-  useEffect(() => {
-    console.log(item);
-    console.log(Boolean(item));
-  }, [item]);
   return (
     item &&
     mount && (

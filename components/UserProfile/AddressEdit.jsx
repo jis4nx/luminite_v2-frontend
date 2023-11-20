@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Checkbox, Input, Typography } from "@material-tailwind/react";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
@@ -7,10 +7,23 @@ import { useSelector } from "react-redux";
 
 function AddressEdit({ address, setEdit, create }) {
   const [defaultAddr, setDefaultAddr] = useState(false);
+  const [isAddressError, setIsAddressError] = useState(false);
   const updateAddressMut = useMutation(updateAddress);
   const createAddressMut = useMutation(createAddress);
   const { id } = useSelector((state) => state.profile);
 
+  useEffect(() => {
+    let timeoutId;
+    if (isAddressError) {
+      timeoutId = setTimeout(() => {
+        setIsAddressError(false);
+      }, 5000);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [isAddressError]);
   let addressValues = create
     ? {
       flat_no: "",
@@ -40,7 +53,8 @@ function AddressEdit({ address, setEdit, create }) {
       if (create) {
         createAddressMut.mutate(data, {
           onSuccess: (res) => {
-            console.log('Yay Created');
+            console.log("Yay Created");
+            setEdit(false);
           },
           onError: (res) => {
             console.log(res.response.data);
@@ -49,10 +63,12 @@ function AddressEdit({ address, setEdit, create }) {
       } else {
         updateAddressMut.mutate(data, {
           onSuccess: (res) => {
-            console.log(res);
+            setEdit(false);
+          },
+          onError: (err) => {
+            setIsAddressError(err.response.data.non_field_errors[0]);
           },
         });
-        setEdit(false);
       }
     },
   });
@@ -125,12 +141,17 @@ function AddressEdit({ address, setEdit, create }) {
                 value={formik.values.address_line2}
               />
             </div>
+            {isAddressError && (
+              <p className="text-sm font-bold text-red-600">
+                {isAddressError}
+              </p>
+            )}
             <div className="flex items-center text-blue-gray-900">
               <p>Set as default address</p>
               <Checkbox
                 color="indigo"
-                defaultchecked={formik.values.default}
                 onChange={(e) => setDefaultAddr(e.target.checked)}
+                defaultChecked={address?.default}
               />
             </div>
 

@@ -71,7 +71,12 @@ export default function NavBar() {
               />
               {searchQuery &&
                 (
-                  <div onClick={() => setSearchQuery("")}>
+                  <div
+                    onClick={() => {
+                      setInpFocus(false);
+                      setSearchQuery("");
+                    }}
+                  >
                     <FontAwesomeIcon
                       icon={faX}
                       size="sm"
@@ -88,15 +93,17 @@ export default function NavBar() {
                 Search
               </Button>
             </div>
-            {inpFocus && (
-              <div>
-                <SearchProduct
-                  items={searchData}
-                  handleClickProduct={() => setInpFocus(false)}
-                  query={searchQuery}
-                />
-              </div>
-            )}
+            {inpFocus
+              ? (
+                <div>
+                  <SearchProduct
+                    items={searchData}
+                    handleClickProduct={() => setInpFocus(false)}
+                    query={searchQuery}
+                  />
+                </div>
+              )
+              : null}
           </div>
           {isAuthenticated ? <ProfileMenu /> : <AccountMenu />}
           <div className="flex items-center px-2 gap-4 py-2">

@@ -4,42 +4,64 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useFormik } from "formik";
-import { Button } from "@material-tailwind/react";
+import { Button, IconButton } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import Address from "@components/Checkout/Address";
 import { useUserAdressQuery } from "@hooks/addressQuery";
 import AddressEdit from "@components/UserProfile/AddressEdit";
+import AddressList from "@components/UserProfile/AddressList";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateProfile } from "@app/api/accountApi/accountApi";
+import ChangePasswordForm from "@components/UserProfile/ChangePasswordForm";
 
 function Profile() {
   const [mounted, setMounted] = React.useState(false);
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { isAuthenticated, isLoading } = useSelector((state) => state.user);
-  const { user, address, profile_image } = useSelector((state) =>
-    state.profile
-  );
+  const { user, address, profile_image, firstName, lastName, phoneNumer } =
+    useSelector((
+      state,
+    ) => state.profile);
+  const userProfile = useSelector((state) => state.profile);
   const [editMode, setEditMode] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
   const { data: addressData } = useUserAdressQuery();
   const fields = [
-    { label: "Flat No", value: "flat_no" },
-    { label: "Street No", value: "street_no" },
-    { label: "Address Line 1", value: "address_line1" },
-    { label: "Address Line 2", value: "address_line2" },
-    { label: "City", value: "city" },
-    { label: "Postal Code", value: "postal_code" },
+    { label: "First name", value: "firstName" },
+    { label: "Last name", value: "lastName" },
+    { label: "Email", value: "user" },
+    { label: "Phone", value: "phoneNumber" },
   ];
+
+  const updateProfileData = useMutation(updateProfile);
+
   let data = {};
   fields.map((item) => {
-    data[item.value] = address[item.value];
+    data[item.value] = userProfile[item.value];
   });
   const formik = useFormik({
     initialValues: {
       ...data,
     },
     onSubmit: (values) => {
-      console.log(values);
-      setEditMode(false);
+      let payload = new FormData();
+      const data = {
+        first_name: values.firstName,
+        last_name: values.lastName,
+        phone: values.phoneNumber,
+        id: userProfile.id,
+      };
+      for (let x in data) {
+        payload.append(x, data[x]);
+      }
+      updateProfileData.mutate(payload, {
+        onSuccess: (res) => {
+          queryClient.invalidateQueries({ queryKey: ["checkExpiry"] });
+          setEditMode(false);
+        },
+      });
     },
   });
   if (typeof window !== "undefined" && !isAuthenticated) {
@@ -53,6 +75,13 @@ function Profile() {
   return addressData && mounted && !isLoading
     ? (
       <div className="flex">
+        <IconButton
+          size="sm"
+          className="top-4 left-7"
+          onClick={() => setEditMode(!editMode)}
+        >
+          <FontAwesomeIcon icon={faPen} color="black" />
+        </IconButton>
         <div className="flex flex-col items-center justify-center p-5 space-y-2">
           <div className="flex justify-center items-center">
             {profile_image && (
@@ -94,47 +123,28 @@ function Profile() {
               </div>
               {editMode &&
                 (
-                  <div className="flex justify-end mt-3">
+                  <div className="mt-3 pl-[50px]">
                     <Button size="sm" color="indigo" type="submit">
                       Save
                     </Button>
                   </div>
                 )}
             </form>
+            <section className="mt-20">
+              <ChangePasswordForm userId={userProfile.user_id} />
+            </section>
           </div>
         </div>
         <div>
           {editAddress
-            ? <AddressEdit address={editAddress} setEdit={setEditAddress}/>
+            ? <AddressEdit address={editAddress} setEdit={setEditAddress} />
             : (
               <div>
                 <Address />
-                <div className="mt-5">
-                  <ul class="pl-5 mt-2 space-y-1 flex flex-col gap-3">
-                    {addressData.map((item, i) => {
-                      let addr =
-                        `${item.flat_no}, ${item.street_no}, ${item.address_line1}, ${
-                          item.address_line2 ? `${item.address_line2}, ` : ""
-                        }${item.city} ${item.postal_code}`;
-                      return (
-                        <li
-                          key={item.id}
-                          className="text-gray-700 text-sm space-x-2 flex"
-                        >
-                          <div className="text-indigo-800 font-bold">
-                            {i + 1}.
-                          </div>
-                          <span>{addr}</span>
-                          <FontAwesomeIcon
-                            icon={faPen}
-                            className="text-indigo-800 cursor-pointer hover:text-black"
-                            onClick={() => setEditAddress(item)}
-                          />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
+                <AddressList
+                  addressList={addressData}
+                  setEditAddress={setEditAddress}
+                />
               </div>
             )}
         </div>

@@ -15,21 +15,21 @@ export function SearchProduct({ items, handleClickProduct, query }) {
   const [mount, setMount] = useState(false);
   const [product, setProducts] = useState([]);
   const router = useRouter();
+
   const handleClick = (id) => {
     router.push(`/product/${id}`);
     handleClickProduct();
   };
+
   useEffect(() => {
     if (items !== undefined) {
       setMount(true);
       setProducts(items.items);
     }
   }, [items]);
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
+
   return mount && (
-    <Card className="mt-2 absolute w-[28%]">
+    <Card className="mt-2 absolute w-[28%]" style={{ zIndex: "99" }}>
       {product.length
         ? (
           <List>

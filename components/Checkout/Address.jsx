@@ -45,6 +45,7 @@ function Address() {
     if (addressList) {
       addressList.forEach((item) => {
         if (item.default === true) {
+          setDefaultAddress(item);
           let addr =
             `${item.flat_no}, ${item.street_no}, ${item.address_line1}, ${
               item.address_line2 ? `${item.address_line2}, ` : ""

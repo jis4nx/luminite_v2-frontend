@@ -106,3 +106,13 @@ export const checkType = async () => {
   const res = await accountApi.get("/checktype");
   return res.data;
 };
+
+export const updateProfile = async (data) => {
+  const res = await accountApi.put(`profile/${data.get("id")}`, data);
+  return res.data;
+};
+
+export const changePassword = async (data) => {
+  const res = await accountApi.put(`change-password/${data.id}`, data);
+  return res.data;
+};

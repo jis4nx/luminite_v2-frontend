@@ -13,7 +13,7 @@ function Dashboard() {
       div = <Orders />;
   }
   return (
-    <section className="flex bg-white shadow-md rounded-sm h-[calc(100vh-4rem)]">
+    <section className="flex bg-white shadow-md rounded-sm ">
       <SideBar mode={mode} setMode={setMode} />
       <div className="mx-auto">
         {div}

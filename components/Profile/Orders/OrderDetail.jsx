@@ -34,7 +34,7 @@ function OrderDetail({ ordersData }) {
         ordersData.map((order) => (
           <div key={order.order.id} className="ml-10 space-y-5">
             <div className="flex justify-between p-2 items-center space-x-8">
-              <Typography variant="body" className="text-red-500 font-medium">
+              <Typography variant="paragraph" className="text-red-500 font-medium">
                 ORDER #{order.order.id}
               </Typography>
               <div className="flex gap-1 items-center">

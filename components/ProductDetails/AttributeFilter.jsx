@@ -9,6 +9,7 @@ export default function AttributeFilter({ items, selectedItem, attributes }) {
   const [color, setColor] = useState();
   const [queryAttr, setQueryAttr] = useState({});
   const [colorList, setColorList] = useState([]);
+  const [item, setItem] = useState({});
   const { attributeList, itemList } = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
@@ -25,19 +26,6 @@ export default function AttributeFilter({ items, selectedItem, attributes }) {
     setColorList(colorArr);
   }, [items]);
 
-  const filterItems = (items, color, attr) => {
-    return items.filter((item) => {
-      const hasMatchingColor = color ? item.product_color === color : true;
-
-      const hasMatchingAttributes = attr
-        ? Object.entries(attr).every(([key, value]) =>
-          item.attributes[key] === value
-        )
-        : true;
-
-      return hasMatchingColor && hasMatchingAttributes;
-    });
-  };
   useEffect(() => {
     const filteredItems = itemList.filter((item) => {
       const hasMatchingColor = color ? item.product_color === color : true;
@@ -50,44 +38,17 @@ export default function AttributeFilter({ items, selectedItem, attributes }) {
 
       return hasMatchingColor && hasMatchingAttributes;
     });
-    const item = filteredItems[0];
-    dispatch(setProductItem({ ...item }));
-    // dispatch(filterItem({ color: color, attr: queryAttr }));
-    // const filterColor = items.reduce((result, item) => {
-    //   if (!result.some((obj) => obj.product_color === item.product_color)) {
-    //     result.push(item);
-    //   }
-    //   return result;
-    // }, []);
-    // setFilteredItems(filterColor);
-    // if (color !== undefined) {
-    //   const filteredSizes = items.filter((item) => {
-    //     return color === item.product_color;
-    //   });
-    //   if (filteredSizes.length) {
-    //     const fItem = filteredSizes[0];
-    //     setFilterSizeItems(filteredSizes);
-    //     dispatch(
-    //       setProductItem({
-    //         id: fItem.id,
-    //         name: fItem.name,
-    //         color: fItem.product_color,
-    //         image: fItem.image,
-    //         price: fItem.price,
-    //         stockQty: fItem.qty_in_stock,
-    //         attributes: fItem.attributes,
-    //         product_type: fItem.product_type,
-    //       }),
-    //     );
-    //   }
-    // } else {
-    //   const defaultSizes = items.filter((item) => {
-    //     return selectedItem.color === item.product_color;
-    //   });
-    //   setFilterSizeItems(defaultSizes);
-    // }
+    if (filteredItems.length > 0) {
+      const item = filteredItems[0];
+      setItem(item);
+    } else {
+      setItem([]);
+    }
   }, [color, queryAttr]);
 
+  useEffect(() => {
+    dispatch(setProductItem({ ...item, stockQty: item.qty_in_stock }));
+  }, [item, dispatch]);
   return (
     <div className="text-gray-900 space-y-3">
       <div className="btn-selected">

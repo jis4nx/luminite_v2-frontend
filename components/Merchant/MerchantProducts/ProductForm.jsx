@@ -112,7 +112,7 @@ function ProductForm({ productData, create }) {
                   value: cat.id,
                   label: cat.name,
                 }))}
-                defaultValue={productData.category.id}
+                defaultValue={create ?? productData.category.id}
                 placeholder={create
                   ? "Select Category"
                   : productData.category.name}

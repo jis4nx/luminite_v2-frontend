@@ -74,11 +74,10 @@ function ProductDetails({ id }) {
       dispatch(
         setProductItem({
           id: productData.item.id,
+          stockQty: productData.item.qty_in_stock,
           name: product.name,
-          color: productData.item.product_color,
           image: productData.item.image,
           price: productData.item.price,
-          stockQty: productData.item.qty_in_stock,
           product_type: productData.product_type,
           attributes: productData.item.attributes,
           reviews: productData.item.reviews,
@@ -87,7 +86,7 @@ function ProductDetails({ id }) {
     }
 
     setMount(true);
-  }, [mount, productData, dispatch]);
+  }, [mount, productData]);
 
   return (
     item &&

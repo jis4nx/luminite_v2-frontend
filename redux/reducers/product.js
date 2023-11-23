@@ -7,7 +7,7 @@ const initState = {
     id: "",
     name: "",
     attributes: {},
-    stockQty: 0,
+    stockQty: "",
     image: "",
     price: 0,
     product_type: "",

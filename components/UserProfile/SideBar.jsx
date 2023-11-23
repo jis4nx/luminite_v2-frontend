@@ -23,7 +23,7 @@ const options = [
     icon: PaperClipIcon,
   },
   {
-    label: "Settings",
+    label: "Account",
     icon: Cog6ToothIcon,
   },
   {

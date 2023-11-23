@@ -25,7 +25,7 @@ function MainProductForm() {
                 style={{ color: "#1c4c96" }}
               />
             </div>
-            <ProductForm className="basis-2/3" />
+            <ProductForm className="basis-2/3" create={true} />
           </div>
         )
         : (

@@ -13,7 +13,6 @@ import AddressEdit from "@components/UserProfile/AddressEdit";
 import AddressList from "@components/UserProfile/AddressList";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateProfile } from "@app/api/accountApi/accountApi";
-import ChangePasswordForm from "@components/UserProfile/ChangePasswordForm";
 
 function Profile() {
   const [mounted, setMounted] = React.useState(false);
@@ -130,9 +129,6 @@ function Profile() {
                   </div>
                 )}
             </form>
-            <section className="mt-20">
-              <ChangePasswordForm userId={userProfile.user_id} />
-            </section>
           </div>
         </div>
         <div>

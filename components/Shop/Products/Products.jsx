@@ -8,7 +8,7 @@ function Products() {
   const { data: products } = useQuery("products", getProducts);
   return (
     <div className="mx-auto mt-8">
-      <div className="grid grid-cols-5 gap-x-3">
+      <div className="grid grid-cols-5 gap-3">
         {products?.map((obj) => {
           return (
             <div

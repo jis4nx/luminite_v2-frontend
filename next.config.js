@@ -6,7 +6,7 @@ const nextConfig = {
     BASE_URL_SHOP: process.env.BASE_URL_SHOP,
   },
   images: {
-    domains: ["127.0.0.1"],
+    domains: ["127.0.0.1", "luminitev2-production.up.railway.app"],
   },
   webpack: (config) => {
     config.module.rules.push({

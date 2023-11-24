@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import EmptyProductList from "@components/NotFound/EmptyProductList";
 import Filter from "./Filter/Filter";
+import { useEffect } from "react";
 
 function SearchResult() {
   const { products, filteredResults } = useSelector((state) =>

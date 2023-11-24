@@ -5,7 +5,7 @@ axios.defaults.withCredentials = true;
 import { authenticated } from "@redux/reducers/auth";
 
 export const accountApi = axios.create({
-  baseURL: "http://127.0.0.1:8000/account/",
+  baseURL: process.env.BASE_URL_ACCOUNT || "http://127.0.0.1:8000/account",
 });
 
 export const registerUser = async (user) => {

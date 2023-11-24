@@ -1,5 +1,4 @@
 import "@styles/globals.css";
-import "./data.js";
 import ReactQueryProvider from "@components/ReactQueryProvider.jsx";
 import NavBar from "@components/Navbar/Navbar.jsx";
 import Providers from "@components/Providers.jsx";

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const productAPI = axios.create({
-  baseURL: "http://127.0.0.1:8000/shop/",
+  baseURL: process.env.BASE_URL_SHOP || "http://127.0.0.1:8000/shop/",
   withCredentials: true,
 });
 

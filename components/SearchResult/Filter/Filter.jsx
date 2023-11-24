@@ -30,6 +30,9 @@ function Filter() {
   };
 
   useEffect(() => {
+    console.log(products);
+  }, [products]);
+  useEffect(() => {
     // if (
     //   prevValues.current.userInp !== userInp ||
     //   prevValues.current.userValue !== userValue

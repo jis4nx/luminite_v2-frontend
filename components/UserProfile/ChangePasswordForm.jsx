@@ -45,7 +45,7 @@ function ChangePasswordForm() {
     },
   });
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-lg mx-auto">
       <Typography variant="lead" className="text-site-blue text-md py-3">
         Change Password
       </Typography>

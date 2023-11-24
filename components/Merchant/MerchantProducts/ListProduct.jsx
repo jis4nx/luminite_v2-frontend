@@ -11,7 +11,7 @@ import {
 import { useEffect, useState } from "react";
 import ProductChangeModal from "./ProductChangeModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faList } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faList, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 
 const TABLE_HEAD = ["Name", "Category", "Base Price", "Total Items", "", ""];
@@ -116,9 +116,10 @@ export default function ListProducts() {
                     <td className={`${classes} bg-blue-gray-50/50`}>
                       <Link
                         href={`/merchant/products/${id}`}
-                        className="font-medium"
+                        className="font-medium flex gap-2 items-center text-site-blue"
                       >
                         {total_items}
+                        <FontAwesomeIcon icon={faList} size="sm" />
                       </Link>
                     </td>
 
@@ -136,12 +137,13 @@ export default function ListProducts() {
                       }}
                     >
                       <Typography
-                        as="a"
                         variant="small"
-                        color="blue-gray"
-                        className="font-medium"
+                        className="font-medium text-site-blue flex gap-2 items-center cursor-pointer"
                       >
                         Edit
+                        <FontAwesomeIcon
+                          icon={faPenToSquare}
+                        />
                       </Typography>
                     </td>
                   </tr>

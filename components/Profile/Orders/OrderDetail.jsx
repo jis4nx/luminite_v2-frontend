@@ -12,7 +12,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const TABLE_HEAD = ["Product", "Quantity", "Price", "Payment"];
-import BASE_URL from "@app/data";
 
 const chipColor = { PD: "amber", CD: "light-blue", DL: "green" };
 const chipValue = { PD: "PENDING", CD: "CONFIRMED", DL: "DELIVRED" };
@@ -59,7 +58,7 @@ function OrderDetail({ ordersData }) {
                 value={chipValue[order.order.status]}
               />
               <a
-                href={`${BASE_URL}/shop/invoice/${order.order.id}`}
+                href={`${process.env.BASE_URL}/shop/invoice/${order.order.id}`}
                 target="_blank"
                 className="flex items-center gap-1 cursor-pointer"
               >

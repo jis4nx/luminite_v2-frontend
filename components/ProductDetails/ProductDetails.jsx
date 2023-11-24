@@ -73,14 +73,8 @@ function ProductDetails({ id }) {
       dispatch(setItemList(productData.items));
       dispatch(
         setProductItem({
-          id: productData.item.id,
+          ...productData.item,
           stockQty: productData.item.qty_in_stock,
-          name: product.name,
-          image: productData.item.image,
-          price: productData.item.price,
-          product_type: productData.product_type,
-          attributes: productData.item.attributes,
-          reviews: productData.item.reviews,
         }),
       );
     }

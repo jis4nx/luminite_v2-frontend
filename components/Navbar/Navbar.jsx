@@ -20,6 +20,7 @@ import { searchProduct } from "@app/api/productapi/productapi";
 import { SearchProduct } from "./SearchProduct";
 import { useRouter } from "next/navigation";
 import { setSearchResult } from "@redux/reducers/searchResult";
+import SearchButton from "./SearchButton";
 
 export default function NavBar() {
   const router = useRouter();
@@ -58,41 +59,12 @@ export default function NavBar() {
             </Link>
           </div>
           <div className="w-5/12">
-            <div className="relative flex w-full max-w-[24rem]">
-              <Input
-                label="Search"
-                className="pr-20"
-                value={searchQuery}
-                onFocus={() => setInpFocus(true)}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                containerProps={{
-                  className: "min-w-0",
-                }}
-              />
-              {searchQuery &&
-                (
-                  <div
-                    onClick={() => {
-                      setInpFocus(false);
-                      setSearchQuery("");
-                    }}
-                  >
-                    <FontAwesomeIcon
-                      icon={faX}
-                      size="sm"
-                      className="!absolute top-3 right-24 text-red-500 bg-gray-200"
-                    />
-                  </div>
-                )}
-
-              <Button
-                onClick={handleClick}
-                size="sm"
-                className="!absolute right-1 top-1 rounded bg-indigo-700"
-              >
-                Search
-              </Button>
-            </div>
+            <SearchButton
+              searchQuery={searchQuery}
+              setInpFocus={setInpFocus}
+              setSearchQuery={setSearchQuery}
+              handleClick={handleClick}
+            />
             {inpFocus
               ? (
                 <div>

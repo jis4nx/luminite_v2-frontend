@@ -1,4 +1,3 @@
-import BASE_URL from "@app/data";
 import Image from "next/image";
 import {
   Card,

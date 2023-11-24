@@ -1,4 +1,3 @@
-import BASE_URL from "@app/data";
 import { Card } from "@material-tailwind/react";
 import Image from "next/image";
 import React from "react";
@@ -21,7 +20,7 @@ function ProductReviews() {
                   alt="User Image"
                   width={50}
                   height={50}
-                  src={`${BASE_URL}${review.user.image}`}
+                  src={`${process.env.BASE_URL}${review.user.image}`}
                 />
                 <div className="space-y-1">
                   <p className="text-site-blue text-xs">

@@ -81,7 +81,7 @@ function Profile() {
         >
           <FontAwesomeIcon icon={faPen} color="black" />
         </IconButton>
-        <div className="flex flex-col items-center justify-center p-5 space-y-2">
+        <div className="flex flex-col items-center justify-center p-5 space-y-2 mx-auto">
           <div className="flex justify-center items-center">
             {profile_image && (
               <Image

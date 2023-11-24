@@ -92,6 +92,7 @@ function ListProductItems({ items, id }) {
                           image,
                           product,
                           product_type,
+                          title,
                         },
                         index,
                       ) => {
@@ -167,6 +168,7 @@ function ListProductItems({ items, id }) {
                                     image,
                                     product,
                                     product_type,
+                                    title,
                                     stockQty: qty_in_stock,
                                   }),
                                 );

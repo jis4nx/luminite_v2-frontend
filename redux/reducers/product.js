@@ -6,6 +6,7 @@ const initState = {
   productItem: {
     id: "",
     name: "",
+    title: "",
     attributes: {},
     stockQty: "",
     image: "",
@@ -35,6 +36,7 @@ const productSlice = createSlice({
         product_type,
         name,
         reviews,
+        title,
       } = action.payload;
       state.productItem = {
         id,
@@ -46,6 +48,7 @@ const productSlice = createSlice({
         product_type,
         name,
         reviews,
+        title,
       };
     },
     setItemList(state, action) {

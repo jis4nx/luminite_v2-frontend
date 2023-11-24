@@ -55,9 +55,12 @@ const ProductItemForm = ({ create }) => {
   const handleProductChange = (selectedOption) => {
     setProduct(selectedOption.value);
   };
+
   useEffect(() => {
     setProduct(productItem.product);
+    console.log(productItem);
   }, [productItem]);
+
   useEffect(() => {
     let timeoutId;
     if (isVisible) {
@@ -75,9 +78,11 @@ const ProductItemForm = ({ create }) => {
     ? {
       price: "",
       qty_in_stock: "",
+      title: "",
     }
     : {
       price: productItem.price,
+      title: productItem.title,
       qty_in_stock: productItem.stockQty,
       product_type: productItem.product_type,
     };
@@ -201,6 +206,14 @@ const ProductItemForm = ({ create }) => {
                 })}
               </div>
             </div>
+            <input
+              type="text"
+              placeholder="Product Title"
+              name="title"
+              value={formik.values.title}
+              className="product-input border-site-blue"
+              onChange={formik.handleChange}
+            />
             <input
               type="number"
               placeholder="Qty"

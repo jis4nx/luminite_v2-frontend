@@ -123,6 +123,7 @@ function ProductForm({ productData, create }) {
             <div className="flex items-center mt-4">
               <Button
                 size="sm"
+                variant="gradient"
                 className="mx-auto"
                 type="submit"
                 color="indigo"

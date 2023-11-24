@@ -8,7 +8,7 @@ function isObjectUnique(obj, index, self) {
 const searchResultSlice = createSlice({
   name: "searchResult",
   initialState: {
-    products: null,
+    products: [],
     filteredResults: [],
     attributes: { price: { min: 50, max: 30000 }, colors: [] },
     product_attrs: [],

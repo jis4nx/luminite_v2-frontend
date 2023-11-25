@@ -24,9 +24,12 @@ function Profile() {
       state,
     ) => state.profile);
   const userProfile = useSelector((state) => state.profile);
+
   const [editMode, setEditMode] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
   const { data: addressData } = useUserAdressQuery();
+  const [open, setOpen] = useState(false);
+
   const fields = [
     { label: "First name", value: "firstName" },
     { label: "Last name", value: "lastName" },
@@ -35,6 +38,9 @@ function Profile() {
   ];
 
   const updateProfileData = useMutation(updateProfile);
+  useEffect(() => {
+    console.log(addressData);
+  }, [addressData]);
 
   let data = {};
   fields.map((item) => {
@@ -71,7 +77,7 @@ function Profile() {
     setMounted(true);
   }, []);
 
-  return addressData && mounted && !isLoading
+  return mounted && !isLoading
     ? (
       <div className="flex">
         <IconButton
@@ -138,7 +144,7 @@ function Profile() {
               <div>
                 <Address />
                 <AddressList
-                  addressList={addressData}
+                  addressList={addressData && addressData}
                   setEditAddress={setEditAddress}
                 />
               </div>

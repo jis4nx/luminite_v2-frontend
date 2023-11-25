@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 function AddressList({ addressList, setEditAddress }) {
-  return setEditAddress && (
+  return addressList && setEditAddress && (
     <div className="mt-5">
       <ul class="pl-5 mt-2 space-y-1 flex flex-col gap-3">
         {addressList.map((item, i) => {

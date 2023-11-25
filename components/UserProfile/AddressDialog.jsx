@@ -9,7 +9,7 @@ function AddressDialog({ open, setOpen }) {
       <Dialog open={open} handler={handleOpen}>
         <DialogHeader>New Address</DialogHeader>
         <DialogBody>
-          <AddressEdit create={true} />
+          <AddressEdit create={true} setEdit={setOpen} />
         </DialogBody>
       </Dialog>
     </div>

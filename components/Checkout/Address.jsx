@@ -57,7 +57,7 @@ function Address() {
     }
   }, [addressData, addressList, dispatch]);
 
-  return addressList && addressData && defaultAddress && (
+  return (
     <div className="">
       <div className="flex items-center gap-2 p-3 rounded-md">
         <IconButton
@@ -67,7 +67,7 @@ function Address() {
         />
         <Select
           className="w-full"
-          options={addressList.map((item) => ({
+          options={addressList?.map((item) => ({
             value: item,
             label:
               `${item.flat_no}, ${item.street_no}, ${item.address_line1}, ${
@@ -75,8 +75,8 @@ function Address() {
               }${item.city} ${item.postal_code}`,
           }))}
           styles={selectStyles}
-          defaultValue={defaultAddress}
-          placeholder={defaultAddress}
+          defaultValue={defaultAddress && defaultAddress}
+          placeholder={defaultAddress && defaultAddress}
           onChange={handleAddressChange}
         />
       </div>

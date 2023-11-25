@@ -48,7 +48,7 @@ function AddressEdit({ address, setEdit, create }) {
         default: defaultAddr,
         ...(create
           ? { user_profile: id }
-          : { id: address.id, user_profile: address.user_profile }),
+          : { id: address?.id, user_profile: address?.user_profile }),
       };
       if (create) {
         createAddressMut.mutate(data, {

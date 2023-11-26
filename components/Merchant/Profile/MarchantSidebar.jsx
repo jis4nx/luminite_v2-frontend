@@ -31,7 +31,7 @@ const options = [
   },
 
   {
-    label: "Logout",
+    label: "Analytics",
     icon: PowerIcon,
   },
 ];

@@ -19,7 +19,6 @@ export const getItemList = async () => {
 };
 
 export const changeProduct = async (data) => {
-  console.log(data);
   const res = await productAPI.put(`merchant-products/${data.id}`, data);
   return res.data;
 };
@@ -33,5 +32,10 @@ export const listProductItems = async (id, params = {}) => {
 
 export const changeProductItem = async (data) => {
   const res = await productAPI.put(`merchant-product-item/${data.id}`, data);
+  return res.data;
+};
+
+export const merchantAnalytics = async () => {
+  const res = await productAPI.get("merchant-analytics");
   return res.data;
 };

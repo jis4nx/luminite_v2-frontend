@@ -1,11 +1,13 @@
-import Chart from "react-apexcharts";
-
+import React from "react";
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 function OrderGraph({ items }) {
   return items && (
     <div className="p-3">
       <Chart
         type="area"
         height={350}
+        width="100%"
         series={[
           {
             name: "Sales",

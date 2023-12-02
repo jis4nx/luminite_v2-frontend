@@ -9,10 +9,12 @@ import { setPaymentAccount } from "@redux/reducers/checkout";
 import { useDispatch } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import { orderProduct } from "@app/api/productapi/productapi";
+import ThankYouMsg from "../ThankYouMsg";
 
 function Payment() {
-  const { id } = useSelector((state) => state.profile);
+  const { id, user } = useSelector((state) => state.profile);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [orderId, setOrderId] = useState();
   const { delivery, payment, products } = useSelector((state) =>
     state.checkout
   );
@@ -27,6 +29,7 @@ function Payment() {
       payment: { ...paymentData },
       delivery_method: delivery.delivery_method,
       user: id,
+      email: user,
       delivery_address: delivery.address.id,
     };
     const items = [];
@@ -39,19 +42,16 @@ function Payment() {
     };
     setOrderSuccess(true);
     orderProductItem.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (res) => {
         setOrderSuccess(true);
+        setOrderId(res.data.order);
       },
     });
   };
 
   const dispatch = useDispatch();
   const router = useRouter();
-  useEffect(() => {
-    if (orderSuccess) {
-      router.push("/orders");
-    }
-  }, [orderSuccess, router]);
+
   useEffect(() => {
     if (!delivery.address || !delivery.delivery_method) {
       router.back();
@@ -59,8 +59,15 @@ function Payment() {
   }, [delivery.address, delivery.delivery_method, router]);
 
   return (
-    <>
-      <div className="flex justify-center mt-5">
+    <div className="relative">
+      {orderSuccess && orderId && (
+        <div className="flex items-center justify-center">
+          <div>
+            <ThankYouMsg orderId={orderId} />
+          </div>
+        </div>
+      )}
+      <div className={orderSuccess ? `hidden` : `flex justify-center mt-5`}>
         <div className="basis-1/2 bg-white p-4 rounded-md">
           <div>
             <div className="p-3">
@@ -104,7 +111,7 @@ function Payment() {
           <OrderSummary />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -24,7 +24,7 @@ function PieGraph({ soldItems }) {
             palette: "palette7",
           },
           legend: {
-            position: "right",
+            position: "top",
           },
           plotOptions: {
             pie: {

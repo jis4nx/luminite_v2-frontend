@@ -19,6 +19,9 @@ function OrderGraph({ items }) {
             text: "Sale Counts With Respect To Date",
             style: { fontSize: 14, align: "center" },
           },
+          fill: {
+            type: "solid",
+          },
           colors: ["#1c4c96"],
           xaxis: {
             title: { text: "Dates" },

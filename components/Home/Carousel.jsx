@@ -5,7 +5,7 @@ import { Carousel } from "react-responsive-carousel";
 const IMAGELIST = ["car1", "car2", "car3"];
 export default function SimpleSlider() {
   return (
-    <div className="h-[200px] w-[600px]">
+    <div className="h-[300px] w-[600px]">
       <Carousel
         autoPlay={true}
         showArrows={true}

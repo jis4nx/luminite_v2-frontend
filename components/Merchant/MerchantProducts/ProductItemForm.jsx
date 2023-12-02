@@ -106,7 +106,7 @@ const ProductItemForm = ({ create }) => {
         form_data.append(item, data[item]);
       }
       form_data.append("attributes", JSON.stringify(productAttributes));
-      console.log(form_data);
+      console.log(form_data.get('image'));
       if (create) {
         addProductItemData.mutate(form_data, {
           onSuccess: () => setIsVisible(true),

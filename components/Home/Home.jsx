@@ -3,14 +3,12 @@ import Products from "@components/Shop/Products/Products";
 import SimpleSlider from "./Carousel";
 function Home() {
   return (
-    <div>
-      <div className="flex flex-col gap-3">
-        <div className="flex gap-20">
-          <CategoryBar />
-          <SimpleSlider />
-        </div>
+    <div className="flex flex-col space-y-32">
+      <div className="flex gap-5">
+        <CategoryBar />
+        <SimpleSlider />
       </div>
-      <div className="pt-36">
+      <div className="">
         <Products />
       </div>
     </div>

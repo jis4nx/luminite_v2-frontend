@@ -12,7 +12,7 @@ function SalesData() {
 
   return analyticsData && (
     <div className="m-3 flex flex-col gap-10">
-      <section className="flex justify-around">
+      <section className="flex justify-around flex-wrap">
         <div className="flex flex-col justify-around items-center gap-3 p-3 rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
           <p className="font-bold text-lg text-gray-600">Total Sales</p>
           <p className="text-site-blue font-bold">{analyticsData.total_sold}</p>
@@ -25,10 +25,10 @@ function SalesData() {
         </div>
       </section>
       <section>
-        <OrderGraph items={analyticsData.items} />
+        <PieGraph soldItems={analyticsData.most_sold_types} />
       </section>
       <section className="w-max-[600px] w-[700px]">
-        <PieGraph soldItems={analyticsData.most_sold_types} />
+        <OrderGraph items={analyticsData.items} />
       </section>
     </div>
   );
